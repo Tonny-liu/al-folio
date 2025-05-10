@@ -2,7 +2,7 @@
 layout: about
 title: about
 permalink: /
-subtitle: <a href='#'>Postdoc</a> at Technical University of Munich
+subtitle: <i>Postdoc at Technical University of Munich</i>
 
 profile:
   align: right
