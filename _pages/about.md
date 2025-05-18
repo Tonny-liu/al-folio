@@ -16,10 +16,10 @@ profile:
 selected_papers: true # includes a list of papers marked as "selected={true}"
 social: true # includes social icons at the bottom of the page
 
-# announcements:
-#   enabled: true # includes a list of news items
-#   scrollable: true # adds a vertical scroll bar if there are more than 3 news items
-#   limit: 5 # leave blank to include all the news in the `_news` folder
+announcements:
+  enabled: true # includes a list of news items
+  scrollable: true # adds a vertical scroll bar if there are more than 3 news items
+  limit: 5 # leave blank to include all the news in the `_news` folder
 
 # latest_posts:
 #   enabled: true
@@ -28,7 +28,9 @@ social: true # includes social icons at the bottom of the page
 ---
 
 
-I'm a postdoctoral researcher in Earth system at [Prof. Niklas Boers’ lab](https://www.asg.ed.tum.de/esm/home/) at TUM. My research interests include tipping points and teleconnections in the Earth system, critical phenomena in physical systems, and critical dynamics in complex systems.
+I'm a postdoctoral researcher in Earth system at [Prof. Niklas Boers’ lab](https://www.asg.ed.tum.de/esm/home/) at technical university of Munich (TUM). Prior to this, I completed my Ph.D. at the School of Complex Systems, Beijing Normal University (BNU), in Beijing, China. I also hold an M.Phil. in Biophysics from the Hong Kong University of Science and Technology (HKUST) and a B.Sc. in Physics from the University of the Chinese Academy of Sciences (UCAS).
+
+My research passion lies in uncovering universal behaviors in complex systems and predicting how these systems respond to changing control parameters, such as phase transitions in physical systems or abrupt shifts in the Earth system. My work focuses on climate tipping points and teleconnections in the Earth system, critical phenomena in physics, and the dynamics of complex systems near criticality.
 
 <!-- Write your biography here. Tell the world about yourself. Link to your favorite [subreddit](http://reddit.com). You can put a picture in, too. The code is already in, just name your picture `prof_pic.jpg` and put it in the `img/` folder.
 
