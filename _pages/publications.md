@@ -52,7 +52,7 @@ years: [2025, 2024, 2023, 2022, 2021, 2020,2019]
 .years-container {
   display: flex;
   flex-direction: column;
-  gap: 0.8rem;
+  gap: 1.0rem;
   align-items: flex-end;
 }
 
@@ -61,16 +61,32 @@ years: [2025, 2024, 2023, 2022, 2021, 2020,2019]
   border: none;
   color: var(--global-theme-color);
   text-decoration: none;
-  transition: all 0.3s ease;
+  transition: all 0.05s ease;
   background-color: var(--global-theme-color);
   white-space: nowrap;
-  width: 20px;
+  width: 30px;
   height: 5px;
   display: flex;
   align-items: center;
   justify-content: flex-end;
   overflow: hidden;
   position: relative;
+  padding: 6px 0;
+  margin: 0.1px 0;
+}
+
+.year-link::before {
+  content: attr(data-year);
+  opacity: 0;
+  transition: all 0.2s ease;
+  position: absolute;
+  right: 0;
+  background-color: var(--global-bg-color);
+  padding: 0.3rem 0.4rem;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  z-index: 1;
+  font-size: 0.9rem;
 }
 
 .year-link:hover {
@@ -78,25 +94,24 @@ years: [2025, 2024, 2023, 2022, 2021, 2020,2019]
   color: var(--global-theme-color);
   text-decoration: none;
   transform: translateX(-5px);
-  width: auto;
+  width: 80px;
   padding: 0.5rem 1rem;
   border: 1px solid var(--global-theme-color);
   border-radius: 4px;
-}
-
-.year-link::before {
-  content: attr(data-year);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  position: absolute;
-  right: 0;
-  background-color: var(--global-bg-color);
-  padding: 0.5rem 1rem;
+  height: 25px;
+  transition: all 0.2s ease;
+  justify-content: center;
+  align-items: center;
 }
 
 .year-link:hover::before {
   opacity: 1;
   position: static;
+  box-shadow: none;
+  padding: 0;
+  background-color: transparent;
+  text-align: center;
+  width: 100%;
 }
 
 .publications {
@@ -126,16 +141,21 @@ years: [2025, 2024, 2023, 2022, 2021, 2020,2019]
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 1rem;
+    gap: 1.0rem;
   }
   
   .year-link {
-    width: auto;
+    width: 50px;
     height: auto;
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 0;
     border: 1px solid var(--global-theme-color);
     border-radius: 4px;
     background-color: transparent;
+    margin: 0;
+    transition: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   
   .year-link::before {
@@ -143,8 +163,19 @@ years: [2025, 2024, 2023, 2022, 2021, 2020,2019]
     position: static;
     padding: 0;
     background-color: transparent;
+    box-shadow: none;
+    text-align: center;
   }
-  
+
+  /* Remove all hover effects on mobile */
+  .year-link:hover,
+  .year-link:active {
+    transform: none;
+    width: 50px;
+    background-color: transparent;
+    border: 1px solid var(--global-theme-color);
+  }
+
   .publications {
     margin-right: 0;
   }
@@ -172,7 +203,7 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Citation data
   const years = [2019, 2020, 2021, 2022, 2023, 2024, 2025];
-  const citations = [1, 5, 7, 10, 43, 58, 44]; // Actual citation data from papers
+  const citations = [1, 5, 7, 10, 43, 58, 49]; // Actual citation data from papers
   
   const option = {
     title: {
