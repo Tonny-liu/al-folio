@@ -41,6 +41,17 @@ ninja.data = [{
             window.open("https://www.quantamagazine.org/the-math-of-climate-change-tipping-points-20250915/", "_blank");
           
         },
+      },{id: "post-amazon-deforestation-linked-to-reduced-tibetan-snows-antarctic-ice-loss-study",
+        
+          title: 'Amazon deforestation linked to reduced Tibetan snows, Antarctic ice loss: Study <svg width="1.2rem" height="1.2rem" top=".5rem" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><path d="M17 13.5v6H5v-12h6m3-3h6v6m0-6-9 9" class="icon_svg-stroke" stroke="#999" stroke-width="1.5" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"></path></svg>',
+        
+        description: "Environmental science and conservation news",
+        section: "Posts",
+        handler: () => {
+          
+            window.open("https://news.mongabay.com/2023/03/amazon-deforestation-linked-to-reduced-tibetan-snows-antarctic-ice-loss-study/", "_blank");
+          
+        },
       },{id: "books-the-godfather",
           title: 'The Godfather',
           description: "",
