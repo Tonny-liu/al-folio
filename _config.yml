@@ -128,6 +128,8 @@ external_sources:
     posts:
       - url: https://www.quantamagazine.org/the-math-of-climate-change-tipping-points-20250915/
         published_date: 2025-09-15
+      - url: https://news.mongabay.com/2023/03/amazon-deforestation-linked-to-reduced-tibetan-snows-antarctic-ice-loss-study/
+        published_date: 2023-03-08
 
 # -----------------------------------------------------------------------------
 # Newsletter
