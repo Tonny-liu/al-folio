@@ -57,11 +57,6 @@ ninja.data = [{
           description: "",
           section: "Books",handler: () => {
               window.location.href = "/al-folio/books/the_godfather/";
-            },},{id: "news-a-long-announcement-with-details",
-          title: 'A long announcement with details',
-          description: "",
-          section: "News",handler: () => {
-              window.location.href = "/al-folio/news/announcement_xxx/";
             },},{id: "news-new-preprint-related-to-resilience-measurement-sparkles",
           title: 'New preprint related to resilience measurement! :sparkles:',
           description: "",
