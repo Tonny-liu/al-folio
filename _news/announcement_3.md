@@ -5,4 +5,4 @@ inline: true
 related_posts: false
 ---
 
-New [preprint](https://arxiv.org/abs/2512.23086) related to a new entropy measure! 🥳 
+A [preprint](https://arxiv.org/abs/2512.23086) introducing a novel entropy measure! 🥳 
