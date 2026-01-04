@@ -202,8 +202,8 @@ document.addEventListener('DOMContentLoaded', function() {
   const myChart = echarts.init(chartDom);
   
   // Citation data
-  const years = [2019, 2020, 2021, 2022, 2023, 2024, 2025];
-  const citations = [1, 5, 7, 10, 42, 56, 100]; // Actual citation data from papers
+  const years = [2019, 2020, 2021, 2022, 2023, 2024, 2025，2026];
+  const citations = [1, 5, 7, 10, 42, 56, 106,2]; // Actual citation data from papers
   
   const option = {
     title: {
