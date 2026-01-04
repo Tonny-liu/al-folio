@@ -151,15 +151,51 @@ document.addEventListener('DOMContentLoaded', function() {
     grid: {
       left: '3%',
       right: '4%',
-      bottom: '3%',
+      bottom: '15%',
       containLabel: true
     },
+    dataZoom: [
+      {
+        type: 'slider',
+        show: true,
+        xAxisIndex: [0],
+        start: 0,
+        end: 100,
+        bottom: '5%',
+        height: 20,
+        handleStyle: {
+          color: '#808080',
+          borderColor: '#808080'
+        },
+        dataBackground: {
+          areaStyle: {
+            color: 'rgba(128, 128, 128, 0.1)'
+          },
+          lineStyle: {
+            color: 'rgba(128, 128, 128, 0.3)',
+            width: 1
+          }
+        },
+        selectedDataBackground: {
+          areaStyle: {
+            color: 'rgba(128, 128, 128, 0.2)'
+          },
+          lineStyle: {
+            color: '#808080',
+            width: 1
+          }
+        },
+        fillerColor: 'rgba(128, 128, 128, 0.2)',
+        borderColor: '#808080'
+      }
+    ],
     xAxis: {
       type: 'category',
       data: years,
       axisLabel: {
         interval: 0,
-        fontSize: 12
+        fontSize: 12,
+        rotate: 45
       }
     },
     yAxis: {
