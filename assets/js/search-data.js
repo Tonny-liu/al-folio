@@ -41,6 +41,17 @@ ninja.data = [{
             window.open("https://animationlab.utah.edu/phase-separation/", "_blank");
           
         },
+      },{id: "post-generative-modeling-by-estimating-gradients-of-the-data-distribution-yang-song",
+        
+          title: 'Generative Modeling by Estimating Gradients of the Data Distribution | Yang Song <svg width="1.2rem" height="1.2rem" top=".5rem" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><path d="M17 13.5v6H5v-12h6m3-3h6v6m0-6-9 9" class="icon_svg-stroke" stroke="#999" stroke-width="1.5" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"></path></svg>',
+        
+        description: "This blog post focuses on a promising new direction for generative modeling. We can learn score functions (gradients of log probability density functions) on a large number of noise-perturbed data distributions, then generate samples with Langevin-type sampling. The resulting generative models, often called score-based generative models, has several important advantages over existing model families: GAN-level sample quality without adversarial training, flexible model architectures, exact log-likelihood computation, and inverse problem solving without re-training models. In this blog post, we will show you in more detail the intuition, basic concepts, and potential applications of score-based generative models.",
+        section: "Posts",
+        handler: () => {
+          
+            window.open("https://yang-song.net/blog/2021/score/", "_blank");
+          
+        },
       },{id: "post-the-math-of-climate-change-tipping-points-quanta-magazine",
         
           title: 'The Math of Climate Change Tipping Points | Quanta Magazine <svg width="1.2rem" height="1.2rem" top=".5rem" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><path d="M17 13.5v6H5v-12h6m3-3h6v6m0-6-9 9" class="icon_svg-stroke" stroke="#999" stroke-width="1.5" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"></path></svg>',
