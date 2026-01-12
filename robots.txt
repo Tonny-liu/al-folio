@@ -1,4 +1,4 @@
 User-agent: *
 Disallow:
 
-Sitemap: https://tonnyliu.netlify.app/sitemap.xml
+Sitemap: https://liuteng.org/sitemap.xml
