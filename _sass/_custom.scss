@@ -53,6 +53,17 @@ footer.sticky-bottom {
   padding-bottom: 60px; /* Space for footer */
 }
 
+// Increase spacing between news and selected publications on homepage
+.news {
+  margin-bottom: 3rem;
+}
+
+// Increase spacing above news section on homepage
+// Target h2 that comes after .clearfix (which contains the main content)
+article > .clearfix + h2 {
+  margin-top: 3rem;
+}
+
 // Publication preview image responsive styles
 .publications {
   .preview {
