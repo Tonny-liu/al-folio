@@ -91,13 +91,13 @@ ninja.data = [{
           section: "News",},{id: "news-a-new-preprint-presents-new-evidence-on-the-loss-of-soil-moisture-stabilization-in-tibet-wonderful-collaboration-with-yiran",
           title: 'A new preprint presents new evidence on the loss of soil moisture stabilization...',
           description: "",
-          section: "News",},{id: "projects-project-1",
-          title: 'project 1',
+          section: "News",},{id: "projects-critical-phenomena",
+          title: 'Critical Phenomena',
           description: "with background image",
           section: "Projects",handler: () => {
               window.location.href = "/projects/1_project/";
-            },},{id: "projects-project-2",
-          title: 'project 2',
+            },},{id: "projects-earth-system-tipping-points",
+          title: 'Earth System Tipping Points',
           description: "a project with a background image and giscus comments",
           section: "Projects",handler: () => {
               window.location.href = "/projects/2_project/";
@@ -155,7 +155,7 @@ ninja.data = [{
         title: 'Google Scholar',
         section: 'Socials',
         handler: () => {
-          window.open("https://scholar.google.com/citations?user=3g_VFZgAAAAJ&hl", "_blank");
+          window.open("https://scholar.google.com/citations?user=3g_VFZgAAAAJ", "_blank");
         },
       },{
       id: 'light-theme',
