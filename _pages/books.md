@@ -1,8 +1,8 @@
 ---
 layout: book-shelf
-title: bookshelf
+title: Collection
 permalink: /books/
-nav: false
+nav: False
 collection: books
 ---
 

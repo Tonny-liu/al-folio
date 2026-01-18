@@ -62,6 +62,8 @@ module ExternalPosts
       doc.data['description'] = content[:summary]
       doc.data['date'] = content[:published]
       doc.data['redirect'] = url
+      doc.data['tags'] = Array(content[:tags]).compact if content[:tags]
+      doc.data['categories'] = Array(content[:categories]).compact if content[:categories]
       doc.content = content[:content]
       site.collections['posts'].docs << doc
     end
@@ -70,6 +72,8 @@ module ExternalPosts
       src['posts'].each do |post|
         puts "...fetching #{post['url']}"
         content = fetch_content_from_url(post['url'])
+        content[:tags] = post['tags'] if post['tags']
+        content[:categories] = post['categories'] if post['categories']
         content[:published] = parse_published_date(post['published_date'])
         create_document(site, src['name'], post['url'], content)
       end

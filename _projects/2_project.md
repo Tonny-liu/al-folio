@@ -1,10 +1,10 @@
 ---
 layout: page
-title: project 2
+title: Earth System Tipping Points
 description: a project with a background image and giscus comments
 img: assets/img/3.jpg
 importance: 2
-category: Physics system
+category: Earth system
 giscus_comments: true
 ---
 
