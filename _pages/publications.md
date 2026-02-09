@@ -61,7 +61,13 @@ years: [2026,2025, 2024, 2023, 2022, 2021, 2020,2019]
   border: none;
   color: var(--global-theme-color);
   text-decoration: none;
-  transition: all 0.05s ease;
+  transition:
+    width 0.35s ease,
+    padding 0.35s ease,
+    background-color 1s ease,
+    border-color 0.35s ease,
+    border-radius 0.35s ease,
+    transform 0.35s ease;
   background-color: var(--global-theme-color);
   white-space: nowrap;
   width: 30px;
@@ -105,7 +111,38 @@ years: [2026,2025, 2024, 2023, 2022, 2021, 2020,2019]
   align-items: center;
 }
 
+.publications-years.expanded .year-link:hover {
+  /* Avoid extra jump on hover when already expanded */
+  transform: none;
+}
+
 .year-link:hover::before {
+  opacity: 1;
+  position: static;
+  box-shadow: none;
+  padding: 0;
+  background-color: transparent;
+  text-align: center;
+  width: 100%;
+}
+
+/* Expanded state: show all years as labeled pills */
+.publications-years.expanded .year-link {
+  background-color: transparent;
+  color: var(--global-theme-color);
+  text-decoration: none;
+  transform: none;
+  width: auto;
+  min-width: 80px;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--global-theme-color);
+  border-radius: 4px;
+  height: 25px;
+  justify-content: center;
+  align-items: center;
+}
+
+.publications-years.expanded .year-link::before {
   opacity: 1;
   position: static;
   box-shadow: none;
@@ -216,13 +253,21 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
+  // Toggle expand/collapse of year sidebar on double-click
+  const yearsSidebar = document.querySelector('.publications-years');
+  if (yearsSidebar) {
+    yearsSidebar.addEventListener('dblclick', function() {
+      yearsSidebar.classList.toggle('expanded');
+    });
+  }
+
   // Initialize citation chart
   const chartDom = document.getElementById('citation-chart');
   const myChart = echarts.init(chartDom);
   
   // Citation data
   const years = [2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026];
-  const citations = [1, 5, 7, 10, 42, 56, 107, 13]; // Actual citation data from papers
+  const citations = [1, 5, 7, 10, 42, 56, 107, 21]; // Actual citation data from papers
   
   const option = {
     title: {
