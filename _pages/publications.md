@@ -478,11 +478,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const nodes = [];
     const edges = [];
     const centerId = 'Teng Liu';
+    const excludedCoauthors = ['jun chu', 'sang kwon lee','yatong qian'];
 
     // Center node
     nodes.push({
       id: centerId,
-      symbolSize: 30,
+      symbolSize: 20,
       category: 0,
       draggable: true,
       itemStyle: {
@@ -490,16 +491,20 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
 
-    // Coauthor nodes (only include collaborators with > 2 joint papers)
+    // Coauthor nodes (only include collaborators with > 2 joint papers, and not in exclusion list)
     Object.keys(coauthorCounts).forEach(name => {
       const count = coauthorCounts[name];
       if (count <= 1) {
         return;
       }
+      const normName = name.toLowerCase();
+      if (excludedCoauthors.includes(normName)) {
+        return;
+      }
       nodes.push({
         id: name,
         name: name,
-        symbolSize: 14 + Math.sqrt(count) * 8,
+        symbolSize: 6 + Math.sqrt(count) * 8,
         category: 1,
         draggable: true,
         itemStyle: {
@@ -510,7 +515,7 @@ document.addEventListener('DOMContentLoaded', function() {
         source: centerId,
         target: name,
         lineStyle: {
-          width: 1.5
+          width: 1.0
         }
       });
     });
