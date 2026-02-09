@@ -18,8 +18,18 @@ years: [2026,2025, 2024, 2023, 2022, 2021, 2020,2019]
   </div>
 </div>
 
-<!-- Citation Statistics Chart -->
-<div id="citation-chart" style="width: 80%; height: 300px; margin: 2rem auto;"></div>
+<!-- Citation Statistics & Coauthor Network -->
+<div class="pub-stats-wrapper">
+  <div class="pub-stat-block">
+    <div id="citation-chart" class="pub-chart"></div>
+  </div>
+  <div class="pub-stat-block">
+    <div id="coauthor-graph" class="pub-chart pub-graph"></div>
+  </div>
+</div>
+<script id="coauthor-counts-data" type="application/json">
+{% coauthor_counts %}
+</script>
 
 <!-- Bibsearch Feature -->
 {% include bib_search.liquid %}
@@ -220,6 +230,36 @@ years: [2026,2025, 2024, 2023, 2022, 2021, 2020,2019]
     margin-right: 0;
   }
 }
+
+/* Layout for citation chart & coauthor network */
+.pub-stats-wrapper {
+  width: 100%;
+  margin: 2rem 0 2rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.pub-stat-block {
+  flex: 1 1 0;
+}
+
+.pub-chart {
+  width: 100%;
+  height: 300px;
+}
+
+.pub-graph {
+  height: 420px;
+}
+
+@media (min-width: 992px) {
+  .pub-stats-wrapper {
+    flex-direction: row;
+    align-items: stretch;
+    gap: 2.5rem;
+  }
+}
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
@@ -261,9 +301,44 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
+  // Fallback: build coauthor counts from rendered author lists (if bib parsing fails)
+  function buildCoauthorCountsFromDom() {
+    const coauthorCounts = {};
+    const mainAuthorPatterns = ['teng liu', 'liu, teng', 'liu#, teng'];
+
+    document.querySelectorAll('.year-section .author').forEach(authorBlock => {
+      const rawText = authorBlock.textContent.replace(/\s+/g, ' ').trim();
+      const lower = rawText.toLowerCase();
+
+      const isMainAuthor = mainAuthorPatterns.some(p => lower.includes(p));
+      if (!isMainAuthor) return;
+
+      const parts = rawText.split(/,\s*/);
+      const names = [];
+      parts.forEach(part => {
+        part.split(/\sand\s+/i).forEach(name => {
+          const trimmed = name.trim();
+          if (trimmed) names.push(trimmed);
+        });
+      });
+
+      names.forEach(name => {
+        const lowerName = name.toLowerCase();
+        if (mainAuthorPatterns.some(p => lowerName.includes(p))) return;
+        if (lowerName === 'and') return;
+        // Skip collapsed-placeholder texts like "2 more authors"
+        if (/\bmore author/.test(lowerName)) return;
+        coauthorCounts[name] = (coauthorCounts[name] || 0) + 1;
+      });
+    });
+
+    return coauthorCounts;
+  }
+
   // Initialize citation chart
   const chartDom = document.getElementById('citation-chart');
   const myChart = echarts.init(chartDom);
+  let coauthorChart = null;
   
   // Citation data
   const years = [2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026];
@@ -378,9 +453,129 @@ document.addEventListener('DOMContentLoaded', function() {
 
   myChart.setOption(option);
 
+  // Load coauthor counts computed at build time from papers.bib
+  let coauthorCounts = {};
+  try {
+    const el = document.getElementById('coauthor-counts-data');
+    if (el && el.textContent) {
+      coauthorCounts = JSON.parse(el.textContent.trim());
+    }
+  } catch (e) {
+    console.warn('Failed to parse coauthor counts JSON:', e);
+    coauthorCounts = {};
+  }
+
+  // If build-time data is empty, fall back to DOM-based extraction (without "and N more" nodes)
+  if (!coauthorCounts || Object.keys(coauthorCounts).length === 0) {
+    coauthorCounts = buildCoauthorCountsFromDom();
+  }
+
+  // Initialize coauthor network graph
+  const graphDom = document.getElementById('coauthor-graph');
+  if (graphDom && Object.keys(coauthorCounts).length > 0) {
+    coauthorChart = echarts.init(graphDom);
+
+    const nodes = [];
+    const edges = [];
+    const centerId = 'Teng Liu';
+
+    // Center node
+    nodes.push({
+      id: centerId,
+      symbolSize: 30,
+      category: 0,
+      draggable: true,
+      itemStyle: {
+        color: '#adadad' 
+      }
+    });
+
+    // Coauthor nodes (only include collaborators with > 2 joint papers)
+    Object.keys(coauthorCounts).forEach(name => {
+      const count = coauthorCounts[name];
+      if (count <= 1) {
+        return;
+      }
+      nodes.push({
+        id: name,
+        name: name,
+        symbolSize: 14 + Math.sqrt(count) * 8,
+        category: 1,
+        draggable: true,
+        itemStyle: {
+        color: '#9085ab' 
+        }
+      });
+      edges.push({
+        source: centerId,
+        target: name,
+        lineStyle: {
+          width: 1.5
+        }
+      });
+    });
+
+    const graphOption = {
+      title: {
+        text: 'Coauthor Network',
+        left: 'center',
+        top: 10,
+        textStyle: {
+          fontSize: 14
+        }
+      },
+      tooltip: {
+        formatter: function(params) {
+          if (params.dataType === 'node' && params.data.id !== centerId) {
+            const c = coauthorCounts[params.data.name] || 0;
+            return params.data.name + '<br/>Papers together: ' + c;
+          }
+          if (params.dataType === 'node') {
+            return params.data.name;
+          }
+          return '';
+        }
+      },
+      animationDuration: 600,
+      series: [
+        {
+          type: 'graph',
+          layout: 'force',
+          roam: true,
+          draggable: true,
+          focusNodeAdjacency: true,
+          data: nodes,
+          edges: edges,
+          categories: [
+            { name: 'Me' },
+            { name: 'Coauthor' }
+          ],
+          label: {
+            show: true,
+            position: 'right',
+            formatter: '{b}',
+            fontSize: 11
+          },
+          force: {
+            repulsion: 120,
+            edgeLength: [70, 150]
+          },
+          lineStyle: {
+            color: 'rgba(150, 150, 150, 0.7)'
+          }
+        }
+      ]
+    };
+
+    coauthorChart.setOption(graphOption);
+  }
+
   // Handle window resize
   window.addEventListener('resize', function() {
     myChart.resize();
+    if (coauthorChart) {
+      coauthorChart.resize();
+    }
   });
 });
 </script>
