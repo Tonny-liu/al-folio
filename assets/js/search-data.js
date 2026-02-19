@@ -91,7 +91,7 @@ ninja.data = [{
           section: "News",},{id: "news-a-new-preprint-presents-new-evidence-on-the-loss-of-soil-moisture-stabilization-in-tibet-wonderful-collaboration-with-yiran",
           title: 'A new preprint presents new evidence on the loss of soil moisture stabilization...',
           description: "",
-          section: "News",},{id: "news-a-new-preprint-introduces-a-deep-learning-based-method-for-reconstructing-long-term-climate-data-revealing-systematic-biases-in-widely-used-temperature-and-precipitation-datasets-incredible-collaboration-with-zhen",
+          section: "News",},{id: "news-a-new-preprint-introduces-a-deep-learning-based-method-for-reconstructing-long-term-climate-data-revealing-systematic-biases-in-widely-used-temperature-and-precipitation-datasets-incredible-collaboration-with-zhen-and-all-the-other-authors",
           title: 'A new preprint introduces a deep learning-based method for reconstructing long-term climate data,...',
           description: "",
           section: "News",},{id: "projects-critical-phenomena",
