@@ -6,7 +6,7 @@ subtitle: <i>Postdoc at Technical University of Munich</i>
 
 profile:
   align: right
-  image: Sputnik_I.jpeg
+  image: photo.jpeg
   image_circular: False # crops the image to make it circular
   more_info: > 
     <p>85521 Ottobrunn</p>

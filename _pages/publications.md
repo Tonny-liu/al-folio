@@ -478,7 +478,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const nodes = [];
     const edges = [];
     const centerId = 'Teng Liu';
-    const excludedCoauthors = ['jun chu', 'sang kwon lee','yatong qian'];
+    const excludedCoauthors = ['jun chu', 'sang kwon lee','yatong qian', 'wei chen', 'quang quan nguyen', 'xingxiang chen', 'xianan qin'];
 
     // Center node
     nodes.push({
@@ -562,8 +562,8 @@ document.addEventListener('DOMContentLoaded', function() {
             fontSize: 11
           },
           force: {
-            repulsion: 120,
-            edgeLength: [70, 150]
+            repulsion: 80,
+            edgeLength: [50, 220]
           },
           lineStyle: {
             color: 'rgba(150, 150, 150, 0.7)'
