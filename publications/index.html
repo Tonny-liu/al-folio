@@ -495,9 +495,25 @@ document.addEventListener('DOMContentLoaded', function() {
     coauthorChart.setOption(graphOption);
   }
 
-  // Handle window resize
+  // Handle window resize and container layout changes
+  const resizeObserver = new ResizeObserver(function() {
+    if (myChart) {
+      myChart.resize();
+    }
+    if (coauthorChart) {
+      coauthorChart.resize();
+    }
+  });
+  
+  const wrapper = document.querySelector('.pub-stats-wrapper');
+  if (wrapper) {
+    resizeObserver.observe(wrapper);
+  }
+
   window.addEventListener('resize', function() {
-    myChart.resize();
+    if (myChart) {
+      myChart.resize();
+    }
     if (coauthorChart) {
       coauthorChart.resize();
     }

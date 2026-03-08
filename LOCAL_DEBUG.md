@@ -5,6 +5,7 @@
 ### 1. 安装 Docker
 
 **macOS:**
+
 ```bash
 # 使用 Homebrew 安装
 brew install --cask docker
@@ -28,6 +29,7 @@ docker compose up
 ```
 
 或者使用精简版镜像（体积更小）：
+
 ```bash
 docker compose -f docker-compose-slim.yml up
 ```
@@ -43,6 +45,7 @@ docker compose -f docker-compose-slim.yml up
 ### 5. 停止服务器
 
 按 `Ctrl + C` 停止服务器，或使用：
+
 ```bash
 docker compose down
 ```
@@ -54,6 +57,7 @@ docker compose down
 ### 1. 安装依赖
 
 **安装 Ruby:**
+
 ```bash
 # 使用 Homebrew
 brew install ruby
@@ -66,11 +70,13 @@ rbenv global 3.3.5
 ```
 
 **安装 Bundler:**
+
 ```bash
 gem install bundler
 ```
 
 **安装 Python 和 Jupyter（用于支持 Jupyter notebook）:**
+
 ```bash
 brew install python
 pip install jupyter
@@ -108,6 +114,7 @@ bundle exec jekyll serve
 ### 查看构建日志
 
 如果遇到错误，查看详细的构建日志：
+
 ```bash
 # Docker 方式
 docker compose logs -f
@@ -119,6 +126,7 @@ bundle exec jekyll serve --verbose
 ### 强制重新构建
 
 如果需要完全重新构建：
+
 ```bash
 # Docker 方式
 docker compose down
@@ -132,6 +140,7 @@ bundle exec jekyll serve
 ### 检查语法错误
 
 在修改 `_pages/publications.md` 后，如果页面无法正常显示：
+
 1. 检查浏览器控制台（F12）是否有 JavaScript 错误
 2. 检查 Jekyll 构建日志是否有 Liquid 模板错误
 3. 确保 ECharts 库正确加载
@@ -150,6 +159,7 @@ bundle exec jekyll serve
 ### Docker 相关问题
 
 **问题：端口 8080 已被占用**
+
 ```bash
 # 修改 docker-compose.yml 中的端口映射
 ports:
@@ -157,6 +167,7 @@ ports:
 ```
 
 **问题：权限错误**
+
 ```bash
 # 在 docker-compose.yml 中取消注释 build 部分，并设置正确的用户 ID
 build:
@@ -170,6 +181,7 @@ build:
 ### Jekyll 相关问题
 
 **问题：依赖安装失败**
+
 ```bash
 # 更新 Bundler
 gem update bundler
@@ -180,6 +192,7 @@ bundle install
 ```
 
 **问题：页面无法访问**
+
 - 检查 `_config.yml` 中的 `url` 和 `baseurl` 配置
 - 确保 Jekyll 服务器正在运行
 - 检查防火墙设置
@@ -200,6 +213,3 @@ bundle exec jekyll serve   # 启动服务器
 bundle exec jekyll build   # 构建网站（不启动服务器）
 bundle exec jekyll clean   # 清理构建文件
 ```
-
-
-
