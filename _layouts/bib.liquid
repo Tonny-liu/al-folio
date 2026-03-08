@@ -55,7 +55,7 @@
   {% endif %}
 
   <!-- Entry bib key -->
-  <div id="{{ entry.key }}" class="{% if site.enable_publication_thumbnails %}col-sm-8{% else %}col-sm-10{% endif %}">
+  <div id="{{ entry.key }}" class="{% if site.enable_publication_thumbnails %}col-sm-8 col-md-9{% else %}col-sm-10 col-md-12{% endif %}">
     <!-- Title -->
     <div class="title">
       {% if entry.doi %}
