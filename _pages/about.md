@@ -8,7 +8,7 @@ profile:
   align: right
   image: photo.jpg
   image_circular: False # crops the image to make it circular
-  more_info: > 
+  more_info: >
     <p>85521 Ottobrunn</p>
     <p>Lise-Meitner-Straße 9-11</p>
     <p>Munich, Germany</p>
@@ -26,7 +26,6 @@ announcements:
 #   scrollable: true # adds a vertical scroll bar if there are more than 3 new posts items
 #   limit: 3 # leave blank to include all the blog posts
 ---
-
 
 I'm a postdoctoral researcher in Earth system at [Prof. Niklas Boers’ lab](https://www.asg.ed.tum.de/esm/home/) at technical university of Munich (TUM). Prior to this, I completed my Ph.D. at the School of Complex Systems, Beijing Normal University (BNU), in Beijing, China. I also hold an M.Phil. in Biophysics from the Hong Kong University of Science and Technology (HKUST) and a B.Sc. in Physics from the University of the Chinese Academy of Sciences (UCAS).
 

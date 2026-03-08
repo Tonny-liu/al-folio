@@ -5,6 +5,7 @@
 ## 前提条件
 
 1. **Google Scholar 用户 ID 已配置**
+
    - 文件：`_data/socials.yml`
    - 字段：`scholar_userid: 3g_VFZgAAAAJ`
    - ✅ 已配置完成
@@ -79,10 +80,11 @@
 1. **保存文件**：保存 `papers.bib` 文件
 
 2. **重新构建网站**：
+
    ```bash
    # 如果使用 Docker
    docker compose restart
-   
+
    # 如果使用本地安装
    bundle exec jekyll serve
    ```
@@ -95,16 +97,19 @@
 ## 注意事项
 
 1. **引用数更新**：
+
    - 引用数是通过插件自动从 Google Scholar 获取的
    - 首次访问时可能需要几秒钟来获取数据
    - 为了避免被 Google Scholar 限制，插件会在请求之间添加随机延迟（1.5-3.5秒）
 
 2. **预印本文章**：
+
    - 预印本（如 arXiv）文章在 Google Scholar 中可能还没有引用数
    - 如果文章还没有被 Google Scholar 索引，可能无法获取引用数
    - 这种情况下，徽章可能显示 "N/A" 或无法显示
 
 3. **ID 格式**：
+
    - `google_scholar_id` 通常是 11-12 个字符的字符串
    - 只包含字母、数字和可能的特殊字符
    - 不要包含 URL 参数（如 `&hl=en`）
@@ -118,11 +123,13 @@
 ### 问题：引用数显示为 "N/A"
 
 **可能原因**：
+
 - 文章 ID 不正确
 - 文章尚未被 Google Scholar 索引
 - Google Scholar 暂时无法访问
 
 **解决方法**：
+
 1. 检查 `google_scholar_id` 是否正确
 2. 在浏览器中直接访问 Google Scholar 文章页面验证
 3. 查看 Jekyll 构建日志中的错误信息
@@ -130,10 +137,12 @@
 ### 问题：徽章不显示
 
 **可能原因**：
+
 - `google_scholar_id` 字段缺失或格式错误
 - `enable_publication_badges.google_scholar` 未启用
 
 **解决方法**：
+
 1. 检查 `_config.yml` 中 `enable_publication_badges.google_scholar` 是否为 `true`
 2. 检查 BibTeX 文件中 `google_scholar_id` 字段格式是否正确
 3. 确保 `scholar_userid` 在 `_data/socials.yml` 中正确配置
@@ -141,10 +150,12 @@
 ### 问题：构建时出现错误
 
 **可能原因**：
+
 - Ruby 依赖缺失（需要 `nokogiri` 和 `active_support`）
 - 网络连接问题
 
 **解决方法**：
+
 ```bash
 # 确保依赖已安装
 bundle install

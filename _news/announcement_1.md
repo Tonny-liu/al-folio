@@ -5,4 +5,4 @@ inline: true
 related_posts: false
 ---
 
-New [preprint](https://arxiv.org/abs/2505.19034) related to resilience measurement! :sparkles: 
+New [preprint](https://arxiv.org/abs/2505.19034) related to resilience measurement! :sparkles:

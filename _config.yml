@@ -127,7 +127,7 @@ disqus_shortname: al-folio # put your disqus shortname
 external_sources:
   # - name: medium.com
   #   rss_url: https://medium.com/@al-folio/feed
-  - name: PHASE SEPARATION 101  
+  - name: PHASE SEPARATION 101
     posts:
       - url: https://animationlab.utah.edu/phase-separation/
         published_date: 2026-01-12
@@ -136,7 +136,7 @@ external_sources:
           - external
 
   - name: Generative Modeling by Estimating Gradients of the Data Distribution
-    posts:      
+    posts:
       - url: https://yang-song.net/blog/2021/score/
         published_date: 2025-10-12
         tags:
@@ -144,15 +144,15 @@ external_sources:
           - external
 
   - name: The Math of Catastrophe
-    posts:  
+    posts:
       - url: https://www.quantamagazine.org/the-math-of-climate-change-tipping-points-20250915/
         published_date: 2025-09-15
         tags:
           - tipping points
           - external
 
-  - name: 'Amazon deforestation linked to reduced Tibetan snows, Antarctic ice loss: Study'
-    posts:    
+  - name: "Amazon deforestation linked to reduced Tibetan snows, Antarctic ice loss: Study"
+    posts:
       - url: https://news.mongabay.com/2023/03/amazon-deforestation-linked-to-reduced-tibetan-snows-antarctic-ice-loss-study/
         published_date: 2023-03-08
         tags:

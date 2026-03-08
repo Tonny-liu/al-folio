@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Critical Phenomena 
+title: Critical Phenomena
 description: with background image
 img: assets/img/12.jpg
 importance: 1
