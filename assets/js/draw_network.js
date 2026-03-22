@@ -6,7 +6,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const width = container.clientWidth || 800;
     const height = container.clientHeight || 600;
-    const ringRadius = Math.min(width, height) / 2 * 0.8; // 计算圆环半径
+    const isMobile = width < 768; // 判断是否为手机端
+    const ringRadius = isMobile ? Math.min(width, height) / 2 * 0.85 : Math.min(width, height) / 2 * 0.8; // 手机端稍微放大占比
 
     // 清空旧 SVG
     d3.select("#pub-network-container").selectAll("svg").remove();
@@ -69,8 +70,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // 计算 Topic 坐标 (垂直错落列表排布)
         const topicCount = topics.length;
-        const lineSpacing = 40; // 垂直间距
-        const xOffset = 35;     // 左右错开距离
+        const lineSpacing = isMobile ? 30 : 40; // 垂直间距
+        const xOffset = isMobile ? 20 : 35;     // 左右错开距离
         const startY = -((topicCount - 1) * lineSpacing) / 2;
 
         topics.forEach((d, i) => {
@@ -135,7 +136,7 @@ document.addEventListener("DOMContentLoaded", function () {
             .attr("text-anchor", "middle")
             .attr("dominant-baseline", "central")
             .attr("font-weight", "bold")
-            .attr("font-size", "18px")
+            .attr("font-size", isMobile ? "14px" : "18px")
             .attr("fill", "var(--global-text-color, #333)"); // 适配明暗模式
 
         // 移除光环描边技巧，允许连线穿透
@@ -143,7 +144,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // 绘制 Paper 节点 (彩色圆形)
         const paperNodes = node.filter(d => d.type === "paper");
         paperNodes.append("circle")
-            .attr("r", 12) // 节点半径
+            .attr("r", isMobile ? 8 : 12) // 节点半径
             .attr("fill", d => d.color || "#ccc") // JSON 中配置颜色
             .attr("stroke", "var(--global-bg-color, #fff)") // 用背景色描边制造间隙
             .attr("stroke-width", 2);
@@ -152,11 +153,11 @@ document.addEventListener("DOMContentLoaded", function () {
         paperNodes.append("text")
             .text(d => d.label)
             // 自动根据坐标调整文字方向
-            .attr("x", d => d.x > 0 ? 22 : -22)
-            .attr("y", 4)
+            .attr("x", d => d.x > 0 ? (isMobile ? 12 : 22) : (isMobile ? -12 : -22))
+            .attr("y", isMobile ? 3 : 4)
             .attr("text-anchor", d => d.x > 0 ? "start" : "end")
             .attr("fill", "var(--global-text-color, #333)")
-            .attr("font-size", "11px");
+            .attr("font-size", isMobile ? "9px" : "11px");
 
         // ==========================================
         // 6. 核心优化：高亮交互逻辑
@@ -186,9 +187,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 if (isAllowTooltip) {
                     const [mouseX, mouseY] = d3.pointer(event, document.getElementById('pub-network-container'));
+                    let tooltipX = mouseX + 10;
+                    // 如果在手机端且靠右，提示框向左偏，防止溢出屏幕
+                    if (isMobile && tooltipX > width * 0.5) {
+                        tooltipX = mouseX - 120; // 根据大概宽度向左偏移
+                    }
                     tooltip.style("opacity", 1)
                         .html(`Title: ${d.title}`)
-                        .style("left", (mouseX + 10) + "px")
+                        .style("left", tooltipX + "px")
                         .style("top", (mouseY + 10) + "px");
                 }
 
@@ -225,7 +231,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 // 让 tooltip 稳稳地跟随鼠标，并贴近节点
                 const [mouseX, mouseY] = d3.pointer(event, document.getElementById('pub-network-container'));
-                tooltip.style("left", (mouseX + 10) + "px")
+                let tooltipX = mouseX + 10;
+                if (isMobile && tooltipX > width * 0.5) {
+                    tooltipX = mouseX - 120;
+                }
+                tooltip.style("left", tooltipX + "px")
                     .style("top", (mouseY + 10) + "px");
             })
             .on("mouseout", function (event, d) {
