@@ -3,12 +3,24 @@ layout: page
 title: projects
 permalink: /projects/
 description: A growing collection of your cool projects.
-nav: false
+nav: true
 nav_order: 3
 display_categories: [Physics system, Earth system]
 horizontal: false
 ---
 
+<div id="pub-network-container" style="width: 100%; height: 600px; margin-bottom: 2rem; overflow: hidden; position: relative;">
+  <div id="pub-tooltip" style="position: absolute; opacity: 0; background: var(--global-card-bg-color); border: 1px solid var(--global-divider-color); color: var(--global-text-color); padding: 8px; border-radius: 4px; pointer-events: none; font-size: 0.85rem; z-index: 10;"></div>
+</div>
+
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script>
+  window.graphDataUrl = "{{ '/assets/json/publications_graph.json' | relative_url }}";
+</script>
+<script src="{{ '/assets/js/draw_network.js' | relative_url }}"></script>
+
+
+{% comment %}
 <!-- pages/projects.md -->
 <div class="projects">
 {% if site.enable_project_categories and page.display_categories %}
@@ -63,3 +75,4 @@ horizontal: false
   {% endif %}
 {% endif %}
 </div>
+{% endcomment %}

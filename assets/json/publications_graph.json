@@ -1,0 +1,125 @@
+{
+    "nodes": [
+        {
+            "id": "Topic_tp",
+            "type": "topic",
+            "label": "Tipping point"
+        },
+        {
+            "id": "Topic_cs",
+            "type": "topic",
+            "label": "Complex systems"
+        },
+        {
+            "id": "Topic_veg",
+            "type": "topic",
+            "label": "Vegetation resilience"
+        },
+        {
+            "id": "Topic_ema",
+            "type": "topic",
+            "label": "Eigen Microstates Theory"
+        },
+        {
+            "id": "Topic_ai",
+            "type": "topic",
+            "label": "Antifical Intelligence"
+        },
+        {
+            "id": "2023NCC",
+            "type": "paper",
+            "label": "Nat. Clim. Chang., 2023",
+            "title": "Teleconnections among tipping elements in the Earth system",
+            "year": 2023
+        },
+        {
+            "id": "2025NG",
+            "type": "paper",
+            "label": "Nat. Geosci., 2025",
+            "title": "Destabilization of Earth system tipping elements",
+            "year": 2025
+        },
+        {
+            "id": "2026SA",
+            "type": "paper",
+            "label": "Sci. Adv., 2026",
+            "title": "Data gaps and outliers distort critical-slowing-down-based resilience indicators",
+            "year": 2026
+        },
+        {
+            "id": "2022CPL",
+            "type": "paper",
+            "label": "Chin. Phys. Lett., 2022",
+            "title": "Renormalization group theory of eigen microstates",
+            "year": 2022
+        },
+        {
+            "id": "2026arXiv",
+            "type": "paper",
+            "label": "arXiv, 2026",
+            "title": "Generative deep learning improves reconstruction of global historical climate records",
+            "year": 2026
+        },
+        {
+            "id": "2026arXivSM",
+            "type": "paper",
+            "label": "arXiv, 2026",
+            "title": "Warming-driven rise in soil moisture entropy signals destabilization of the Asian Water Tower",
+            "year": 2026
+        },
+        {
+            "id": "2025arXiv",
+            "type": "paper",
+            "label": "arXiv, 2025",
+            "title": "Phase transition revealed by eigen microstate entropy",
+            "year": 2025
+        }
+    ],
+    "links": [
+        {
+            "source": "2023NCC",
+            "target": "Topic_tp",
+            "type": "belong"
+        },
+        {
+            "source": "2025NG",
+            "target": "Topic_tp",
+            "type": "belong"
+        },
+        {
+            "source": "2026SA",
+            "target": "Topic_veg",
+            "type": "belong"
+        },
+        {
+            "source": "2022CPL",
+            "target": "Topic_ema",
+            "type": "belong"
+        },
+        {
+            "source": "2026arXiv",
+            "target": "Topic_ai",
+            "type": "belong"
+        },
+        {
+            "source": "2026arXivSM",
+            "target": "Topic_tp",
+            "type": "belong"
+        },
+        {
+            "source": "2026arXivSM",
+            "target": "Topic_ema",
+            "type": "belong"
+        },
+        {
+            "source": "2025arXiv",
+            "target": "Topic_ema",
+            "type": "belong"
+        },
+        {
+            "source": "2025arXiv",
+            "target": "Topic_cs",
+            "type": "belong"
+        }
+    ]
+}
