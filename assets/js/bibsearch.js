@@ -24,6 +24,17 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
 
+    // Hide entire .year-section blocks that have no visible entries
+    document.querySelectorAll(".year-section").forEach(function (section) {
+      const allItems = section.querySelectorAll("ol.bibliography > li");
+      const hiddenItems = section.querySelectorAll("ol.bibliography > li.unloaded");
+      if (allItems.length > 0 && allItems.length === hiddenItems.length) {
+        section.classList.add("unloaded");
+      } else {
+        section.classList.remove("unloaded");
+      }
+    });
+
     document.querySelectorAll("h2.bibliography").forEach(function (element) {
       let iterator = element.nextElementSibling; // get next sibling element after h2, which can be h3 or ol
       let hideFirstGroupingElement = true;

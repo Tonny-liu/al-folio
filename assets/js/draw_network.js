@@ -4,6 +4,28 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const tooltip = d3.select('#pub-tooltip');
 
+    // ==========================================
+    // 节点点击弹窗 (HTML overlay)
+    // ==========================================
+    const nodePopup = document.createElement('div');
+    nodePopup.id = 'node-popup';
+    nodePopup.style.cssText = [
+        'position:absolute',
+        'display:none',
+        'background:var(--global-bg-color,#fff)',
+        'border:1px solid var(--global-theme-color,#2698ba)',
+        'border-radius:8px',
+        'padding:10px 14px',
+        'box-shadow:0 4px 16px rgba(0,0,0,0.15)',
+        'max-width:220px',
+        'z-index:100',
+        'pointer-events:auto',
+        'font-size:12px',
+        'line-height:1.5',
+        'color:var(--global-text-color,#333)'
+    ].join(';');
+    container.appendChild(nodePopup);
+
     const width = container.clientWidth || 800;
     const height = container.clientHeight || 600;
     const isMobile = width < 768; // 判断是否为手机端
@@ -165,6 +187,46 @@ document.addEventListener("DOMContentLoaded", function () {
 
         let pinnedNode = null;
 
+        // 关闭弹窗的辅助函数
+        function closePopup() {
+            nodePopup.style.display = 'none';
+        }
+
+        // 打开弹窗的辅助函数
+        function openPopup(d, svgX, svgY) {
+            const pubUrl = d.bibKey ? `/publications/#${d.bibKey}` : '/publications/';
+            nodePopup.innerHTML = `
+                <!-- <div style="font-weight:600;margin-bottom:6px;color:var(--global-theme-color,#2698ba)">${d.label}</div> -->
+                <div style="margin-bottom:8px;font-size:11px;opacity:0.85">${d.title || ''}</div>
+                <a href="${pubUrl}" style="
+                    display:inline-block;
+                    padding:4px 10px;
+                    background:var(--global-theme-color,#2698ba);
+                    color:#fff;
+                    border-radius:4px;
+                    text-decoration:none;
+                    font-size:11px;
+                    font-weight:600;
+                    transition:opacity 0.2s
+                " onmouseover="this.style.opacity=0.8" onmouseout="this.style.opacity=1"
+                >View in Publications &rarr;</a>
+            `;
+            // 将 SVG 坐标转换为容器坐标
+            // SVG viewBox 偏移为 (-width/2, -height/2)
+            const cw = container.clientWidth || width;
+            const ch = container.clientHeight || height;
+            const scaleX = cw / width;
+            const scaleY = ch / height;
+            let px = (svgX + width / 2) * scaleX + 14;
+            let py = (svgY + height / 2) * scaleY + 14;
+            // 防止溢出容器右边
+            const popupW = 224;
+            if (px + popupW > cw) px = Math.max(0, (svgX + width / 2) * scaleX - popupW - 14);
+            nodePopup.style.left = px + 'px';
+            nodePopup.style.top = py + 'px';
+            nodePopup.style.display = 'block';
+        }
+
         // 点击空白区域恢复
         svg.on("click", () => {
             if (pinnedNode) {
@@ -173,6 +235,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 paperNodes.select("circle").attr("stroke", "var(--global-bg-color, #fff)");
                 link.transition().duration(200).attr("stroke-opacity", d => d.type === "belong" ? 0.1 : 0.6);
                 node.transition().duration(200).attr("opacity", 1);
+                closePopup();
             }
         });
 
@@ -261,8 +324,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 event.stopPropagation(); // 阻止事件冒泡到 SVG 导致触发空白点击
                 if (!pinnedNode) {
                     pinnedNode = d; // 记录固定节点
+                    openPopup(d, d.x, d.y);
                 } else if (pinnedNode === d) {
                     pinnedNode = null; // 再次点击解除固定
+                    closePopup();
+                } else {
+                    // 点击另一个节点：切换到新节点
+                    pinnedNode = d;
+                    openPopup(d, d.x, d.y);
                 }
             });
 
