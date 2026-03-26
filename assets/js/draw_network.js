@@ -159,16 +159,33 @@ document.addEventListener("DOMContentLoaded", function () {
             .attr("dominant-baseline", "central")
             .attr("font-weight", "bold")
             .attr("font-size", isMobile ? "14px" : "18px")
-            .attr("fill", "var(--global-text-color, #333)"); // 适配明暗模式
+            .attr("fill", d => d.color || "var(--global-text-color, #333)"); // 优先使用JSON颜色，否则适配明暗模式
 
         // 移除光环描边技巧，允许连线穿透
 
         // 绘制 Paper 节点 (彩色圆形)
         const paperNodes = node.filter(d => d.type === "paper");
         paperNodes.append("circle")
-            .attr("r", isMobile ? 8 : 12) // 节点半径
-            .attr("fill", d => d.color || "#ccc") // JSON 中配置颜色
-            .attr("stroke", "var(--global-bg-color, #fff)") // 用背景色描边制造间隙
+            .attr("r", isMobile ? 8 : 12)
+            .attr("fill", d => {
+                if (d.color) return d.color;
+
+                const topicColors = data.links
+                    .filter(l => l.source.id === d.id && l.type === "belong" && l.target.color)
+                    .map(l => l.target.color);
+
+                if (topicColors.length === 0) return "#ccc";
+                if (topicColors.length === 1) return topicColors[0];
+
+                // 使用 d3.interpolateLab 在符合人眼感知的 Lab 空间下混合
+                let mixedColor = topicColors[0];
+                for (let i = 1; i < topicColors.length; i++) {
+                    // 动态调整权重，确保 N 个颜色时，每个颜色的权重都是 1/N
+                    mixedColor = d3.interpolateLab(mixedColor, topicColors[i])(1 / (i + 1));
+                }
+                return mixedColor;
+            })
+            .attr("stroke", "var(--global-bg-color, #fff)")
             .attr("stroke-width", 2);
 
         // 绘制 Paper 文字标签
@@ -178,7 +195,7 @@ document.addEventListener("DOMContentLoaded", function () {
             .attr("x", d => d.x > 0 ? (isMobile ? 12 : 22) : (isMobile ? -12 : -22))
             .attr("y", isMobile ? 3 : 4)
             .attr("text-anchor", d => d.x > 0 ? "start" : "end")
-            .attr("fill", "var(--global-text-color, #333)")
+            .attr("fill", d => d.color || "var(--global-text-color, #333)")
             .attr("font-size", isMobile ? "9px" : "11px");
 
         // ==========================================

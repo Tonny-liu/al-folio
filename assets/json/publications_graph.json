@@ -3,27 +3,32 @@
         {
             "id": "Topic_tp",
             "type": "topic",
-            "label": "Tipping point"
+            "label": "Tipping point",
+            "color": "#ED5126"
         },
         {
             "id": "Topic_cs",
             "type": "topic",
-            "label": "Complex systems"
+            "label": "Complex systems",
+            "color": "#FF9900"
         },
         {
             "id": "Topic_veg",
             "type": "topic",
-            "label": "Vegetation resilience"
+            "label": "Ecological resilience",
+            "color": "#3C9566"
         },
         {
             "id": "Topic_sp",
             "type": "topic",
-            "label": "Statistical physics"
+            "label": "Critical phenomena",
+            "color": "#AD6598"
         },
         {
             "id": "Topic_ai",
             "type": "topic",
-            "label": "Antifical Intelligence"
+            "label": "Antifical Intelligence",
+            "color": "#11659A"
         },
         {
             "id": "2023NCC",
@@ -89,13 +94,28 @@
             "type": "belong"
         },
         {
+            "source": "2023NCC",
+            "target": "Topic_cs",
+            "type": "belong"
+        },
+        {
             "source": "2025NG",
             "target": "Topic_tp",
             "type": "belong"
         },
         {
+            "source": "2025NG",
+            "target": "Topic_veg",
+            "type": "belong"
+        },
+        {
             "source": "2026SA",
             "target": "Topic_veg",
+            "type": "belong"
+        },
+        {
+            "source": "2026SA",
+            "target": "Topic_tp",
             "type": "belong"
         },
         {
@@ -115,7 +135,7 @@
         },
         {
             "source": "2026arXivSM",
-            "target": "Topic_sp",
+            "target": "Topic_veg",
             "type": "belong"
         },
         {
@@ -126,6 +146,11 @@
         {
             "source": "2025arXiv",
             "target": "Topic_cs",
+            "type": "belong"
+        },
+        {
+            "source": "2026arXiv",
+            "target": "Topic_tp",
             "type": "belong"
         }
     ]
