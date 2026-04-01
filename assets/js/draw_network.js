@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
     container.appendChild(nodePopup);
 
     const width = container.clientWidth || 800;
-    const height = container.clientHeight || 600;
+    const height = container.clientHeight || 650;
     const isMobile = width < 768; // 判断是否为手机端
     const ringRadius = isMobile ? Math.min(width, height) / 2 * 0.85 : Math.min(width, height) / 2 * 0.8; // 手机端稍微放大占比
 

@@ -9,7 +9,7 @@ display_categories: [Physics system, Earth system]
 horizontal: false
 ---
 
-<div id="pub-network-container" style="width: 100%; height: 600px; margin-bottom: 2rem; overflow: hidden; position: relative;">
+<div id="pub-network-container" style="width: 100%; height: 900px; margin-bottom: 4rem; overflow: hidden; position: relative;">
   <div id="pub-tooltip" style="position: absolute; opacity: 0; background: var(--global-card-bg-color); border: 1px solid var(--global-divider-color); color: var(--global-text-color); padding: 8px; border-radius: 4px; pointer-events: none; font-size: 0.85rem; z-index: 10;"></div>
 </div>
 
