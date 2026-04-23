@@ -64,14 +64,35 @@ document.addEventListener("DOMContentLoaded", function () {
   const updateInputField = () => {
     const hashValue = decodeURIComponent(window.location.hash.substring(1)); // Remove the '#' character
     document.getElementById("bibsearch").value = hashValue;
+    updateClearButton(hashValue);
     filterItems(hashValue);
   };
+
+  // Show/hide clear button based on input content
+  const clearBtn = document.getElementById("bibsearch-clear");
+  const updateClearButton = (value) => {
+    if (clearBtn) {
+      clearBtn.classList.toggle("visible", value.length > 0);
+    }
+  };
+
+  // Clear button click: reset input and filter
+  if (clearBtn) {
+    clearBtn.addEventListener("click", function () {
+      const input = document.getElementById("bibsearch");
+      input.value = "";
+      updateClearButton("");
+      filterItems("");
+      input.focus();
+    });
+  }
 
   // Sensitive search. Only start searching if there's been no input for 300 ms
   let timeoutId;
   document.getElementById("bibsearch").addEventListener("input", function () {
     clearTimeout(timeoutId); // Clear the previous timeout
     const searchTerm = this.value.toLowerCase();
+    updateClearButton(this.value);
     timeoutId = setTimeout(filterItems(searchTerm), 300);
   });
 
