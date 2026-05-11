@@ -16,12 +16,40 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/publications/";
           },
-        },{id: "nav-projects",
-          title: "projects",
-          description: "A growing collection of my projects.",
+        },{id: "dropdown-tipping-points",
+              title: "Tipping Points",
+              description: "",
+              section: "Dropdown",
+              handler: () => {
+                window.location.href = "/projects/tipping-points/";
+              },
+            },{id: "dropdown-complex-systems",
+              title: "Complex Systems",
+              description: "",
+              section: "Dropdown",
+              handler: () => {
+                window.location.href = "/projects/complex-systems/";
+              },
+            },{id: "dropdown-critical-phenomena",
+              title: "Critical Phenomena",
+              description: "",
+              section: "Dropdown",
+              handler: () => {
+                window.location.href = "/projects/critical-phenomena/";
+              },
+            },{id: "dropdown-artificial-intelligence",
+              title: "artificial intelligence",
+              description: "",
+              section: "Dropdown",
+              handler: () => {
+                window.location.href = "/projects/artificial-intelligence/";
+              },
+            },{id: "nav-resources",
+          title: "resources",
+          description: "A curated collection of useful tools, datasets, and software for research in climate science, Earth systems, and complex systems.",
           section: "Navigation",
           handler: () => {
-            window.location.href = "/projects/";
+            window.location.href = "/resources/";
           },
         },{id: "nav-cv",
           title: "cv",
