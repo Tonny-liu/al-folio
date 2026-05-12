@@ -12,11 +12,47 @@ Climate tipping points are thresholds at which small changes in external conditi
 
 My work focuses on identifying early-warning signals and understanding the mechanisms that drive the Earth system toward — or away from — tipping points. This includes studying teleconnections between distant components of the Earth system, such as the links between Amazon deforestation, Tibetan snow cover, and Antarctic ice loss.
 
+## Key topics
+<div class="resource-list">
+  <div class="resource-item">
+    <div class="resource-item-header">
+      <h3>Early warning signals (EWS)</h3>
+    </div>
+    <p>Developing robust statistical indicators, such as critical slowing down (CSD), and physics-informed metrics to detect the loss of stability in Earth system components. The goal is to anticipate abrupt climate transitions from observational data before irreversible tipping occurs.</p>
+  </div>
+
+  <div class="resource-item">
+    <div class="resource-item-header">
+      <h3>Planetary teleconnections</h3>
+    </div>
+    <p>Utilizing advanced climate network frameworks to uncover the directional interaction structures that link distant geographical regions. This includes identifying coherent atmospheric-oceanic pathways that propagate local anomalous signals and couple major climate subsystems across the globe.</p>
+  </div>
+
+  <div class="resource-item">
+    <div class="resource-item-header">
+      <h3>Cascading tipping dynamics</h3>
+    </div>
+    <p>Investigating how major climate tipping elements—such as large-scale ocean circulations, polar ice sheets, and biospheres—interact with one another. A key focus is assessing the risk of domino effects, where the threshold crossing of one subsystem triggers a cascade of destabilization in others under anthropogenic warming.</p>
+  </div>
 </div>
 
 ## Research objects
 
 <div class="research-grid">
+  <div class="research-card">
+    <div style="display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;">
+      <div style="flex: 2; min-width: 250px;">
+        <div class="card-badge-wrapper">
+          <span class="resource-badge">Methodology</span>
+        </div>
+        <h3>EWS Detection</h3>
+        <p>Deploying advanced Early Warning Signals (EWS) based on critical slowing down to monitor the stability of Earth system components. Our framework focuses on enhancing detection robustness against empirical data challenges, such as missing values and observational noise.</p>
+      </div>
+      <div style="flex: 1; min-width: 150px; text-align: center;">
+        {% include figure.liquid path="assets/img/topical/tipping.png" class="img-fluid rounded" width="auto" max-height="120px" zoomable=true avoid_scaling=true %}
+      </div>
+    </div>
+  </div>
   <div class="research-card">
     <div style="display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;">
       <div style="flex: 2; min-width: 250px;">
@@ -43,21 +79,6 @@ My work focuses on identifying early-warning signals and understanding the mecha
       </div>
       <div style="flex: 1; min-width: 150px; text-align: center;">
         {% include figure.liquid path="assets/img/topical/tibet.png" class="img-fluid rounded" width="auto" max-height="120px" zoomable=true avoid_scaling=true %}
-      </div>
-    </div>
-  </div>
-
-  <div class="research-card">
-    <div style="display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;">
-      <div style="flex: 2; min-width: 250px;">
-        <div class="card-badge-wrapper">
-          <span class="resource-badge">Ice Sheets</span>
-        </div>
-        <h3>Antarctic Ice Sheet</h3>
-        <p>Assessing the stability of the West Antarctic Ice Sheet and the potential for irreversible mass loss, focusing on the interactions between ocean warming and ice shelf melting.</p>
-      </div>
-      <div style="flex: 1; min-width: 150px; text-align: center;">
-        {% include figure.liquid path="assets/img/topical/antarctica.png" class="img-fluid rounded" width="auto" max-height="120px" zoomable=true avoid_scaling=true %}
       </div>
     </div>
   </div>
