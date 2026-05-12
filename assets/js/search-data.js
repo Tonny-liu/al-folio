@@ -38,20 +38,13 @@ ninja.data = [{
                 window.location.href = "/projects/critical-phenomena/";
               },
             },{id: "dropdown-artificial-intelligence",
-              title: "artificial intelligence",
+              title: "Artificial Intelligence",
               description: "",
               section: "Dropdown",
               handler: () => {
                 window.location.href = "/projects/artificial-intelligence/";
               },
-            },{id: "nav-resources",
-          title: "resources",
-          description: "A curated collection of useful tools, datasets, and software for research in climate science, Earth systems, and complex systems.",
-          section: "Navigation",
-          handler: () => {
-            window.location.href = "/resources/";
-          },
-        },{id: "nav-cv",
+            },{id: "nav-cv",
           title: "cv",
           description: "",
           section: "Navigation",
