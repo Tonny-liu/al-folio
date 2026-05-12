@@ -3,7 +3,7 @@ layout: page
 permalink: /resources/
 title: resources
 description: A curated collection of useful tools, datasets, and software for research in climate science, Earth systems, and complex systems.
-nav: true
+nav: false
 nav_order: 4
 ---
 

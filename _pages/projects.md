@@ -11,7 +11,7 @@ children:
     permalink: /projects/complex-systems/
   - title: Critical Phenomena
     permalink: /projects/critical-phenomena/
-  - title: divider
-  - title: artificial intelligence
+  # - title: divider
+  - title: Artificial Intelligence
     permalink: /projects/artificial-intelligence/
 ---

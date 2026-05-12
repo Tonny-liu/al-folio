@@ -12,32 +12,55 @@ Climate tipping points are thresholds at which small changes in external conditi
 
 My work focuses on identifying early-warning signals and understanding the mechanisms that drive the Earth system toward — or away from — tipping points. This includes studying teleconnections between distant components of the Earth system, such as the links between Amazon deforestation, Tibetan snow cover, and Antarctic ice loss.
 
-## Key topics
+</div>
 
-<div class="resource-list">
-  <div class="resource-item">
-    <div class="resource-item-header">
-      <h3>Early-warning signals</h3>
-      <span class="resource-badge">Detection</span>
+## Research objects
+
+<div class="research-grid">
+  <div class="research-card">
+    <div style="display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;">
+      <div style="flex: 2; min-width: 250px;">
+        <div class="card-badge-wrapper">
+          <span class="resource-badge">Biosphere</span>
+        </div>
+        <h3>Amazon Rainforest</h3>
+        <p>Analyzing the risk of dieback and state transitions in the Amazon basin due to the combined effects of deforestation, climate change, and moisture recycling feedback loops.</p>
+      </div>
+      <div style="flex: 1; min-width: 150px; text-align: center;">
+        {% include figure.liquid path="assets/img/topical/amazon.png" class="img-fluid rounded" width="auto" max-height="120px" zoomable=true avoid_scaling=true %}
+      </div>
     </div>
-    <p>Developing and applying statistical methods to detect early-warning signals of approaching tipping points in observational and model data, including critical slowing down, increased autocorrelation, and flickering.</p>
   </div>
 
-  <div class="resource-item">
-    <div class="resource-item-header">
-      <h3>Earth system teleconnections</h3>
-      <span class="resource-badge">Interaction</span>
+  <div class="research-card">
+    <div style="display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;">
+      <div style="flex: 2; min-width: 250px;">
+        <div class="card-badge-wrapper">
+          <span class="resource-badge">Cryosphere</span>
+        </div>
+        <h3>Tibetan Plateau</h3>
+        <p>Investigating snow cover dynamics and permafrost degradation on the "Third Pole," exploring how regional changes propagate through teleconnections to impact the global climate system.</p>
+      </div>
+      <div style="flex: 1; min-width: 150px; text-align: center;">
+        {% include figure.liquid path="assets/img/topical/tibet.png" class="img-fluid rounded" width="auto" max-height="120px" zoomable=true avoid_scaling=true %}
+      </div>
     </div>
-    <p>Investigating how tipping elements in the Earth system are coupled through teleconnections, and how cascading transitions may propagate across the climate system.</p>
   </div>
 
-  <!-- <div class="resource-item">
-    <div class="resource-item-header">
-      <h3>AMOC stability</h3>
-      <span class="resource-badge">Ocean circulation</span>
+  <div class="research-card">
+    <div style="display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;">
+      <div style="flex: 2; min-width: 250px;">
+        <div class="card-badge-wrapper">
+          <span class="resource-badge">Ice Sheets</span>
+        </div>
+        <h3>Antarctic Ice Sheet</h3>
+        <p>Assessing the stability of the West Antarctic Ice Sheet and the potential for irreversible mass loss, focusing on the interactions between ocean warming and ice shelf melting.</p>
+      </div>
+      <div style="flex: 1; min-width: 150px; text-align: center;">
+        {% include figure.liquid path="assets/img/topical/antarctica.png" class="img-fluid rounded" width="auto" max-height="120px" zoomable=true avoid_scaling=true %}
+      </div>
     </div>
-    <p>Studying the stability of the Atlantic Meridional Overturning Circulation (AMOC) under anthropogenic forcing and its potential for abrupt collapse.</p>
-  </div> -->
+  </div>
 </div>
 
 ---
@@ -88,6 +111,43 @@ My work focuses on identifying early-warning signals and understanding the mecha
   margin: 0.3rem 0 0; font-size: 0.92rem;
   color: var(--global-text-color-light, #666); line-height: 1.55;
 }
+
+/* Research Grid Styling */
+.research-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+}
+.research-card {
+  padding: 1.5rem;
+  border: 1px solid var(--global-divider-color, #e0e0e0);
+  border-radius: 12px;
+  background: var(--global-bg-color);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  display: flex;
+  flex-direction: column;
+}
+.research-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  border-color: var(--global-theme-color);
+}
+.card-badge-wrapper {
+  margin-bottom: 0.8rem;
+}
+.research-card h3 {
+  margin: 0 0 0.6rem 0;
+  font-size: 1.15rem;
+  color: var(--global-theme-color);
+}
+.research-card p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--global-text-color-light, #666);
+  line-height: 1.5;
+}
+
 /* Hide year heading and top border in embedded bibliography */
 .research-page .publications h2.bibliography { display: none; }
 .research-page .publications ol.bibliography { padding-left: 0; }

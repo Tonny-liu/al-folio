@@ -1,6 +1,6 @@
 ---
 layout: page
-title: artificial intelligence
+title: Artificial Intelligence
 description: Research on AI methods applied to Earth system and physics problems
 permalink: /projects/artificial-intelligence/
 nav: false
@@ -42,7 +42,11 @@ Artificial intelligence and machine learning provide powerful tools for analyzin
 
 ## Related publications
 
-*To be updated with specific publications.*
+<div class="publications">
+  {% bibliography --query @*[key=qian2026generative] %}
+  {% bibliography --query @*[key=qian2025decadal] %}
+  {% bibliography --query @*[key=hu2023universality] %}
+</div>
 
 </div>
 
@@ -81,4 +85,7 @@ Artificial intelligence and machine learning provide powerful tools for analyzin
   margin: 0.3rem 0 0; font-size: 0.92rem;
   color: var(--global-text-color-light, #666); line-height: 1.55;
 }
+/* Hide year heading and top border in embedded bibliography */
+.research-page .publications h2.bibliography { display: none; }
+.research-page .publications ol.bibliography { padding-left: 0; }
 </style>
