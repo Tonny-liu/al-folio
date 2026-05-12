@@ -7,7 +7,14 @@ nav: false
 ---
 
 <div class="research-page" markdown="1">
-
+<div style="margin-bottom: 2rem; text-align: center;">
+  {% include figure.liquid path="assets/img/topical/pattern.jpg" class="img-fluid rounded" style="box-shadow: 0 4px 15px rgba(0,0,0,0.1);" width="100%" zoomable=true avoid_scaling=true %}
+  <div class="caption" style="margin-top: 0.8rem; font-size: 0.85rem; color: var(--global-text-color-light);">
+          <a href="https://doi.org/10.1016/j.cub.2024.09.032" target="_blank" style="color: var(--global-text-color-light); text-decoration: underline;">
+        Tarnita et al., Current Biology, 2024
+      </a>
+  </div>
+</div>
 Complex systems are composed of many interacting components whose collective behavior cannot be easily predicted from the properties of individual parts. My research focuses on uncovering universal behaviors in complex systems and predicting how these systems respond to changing control parameters.
 
 This includes studying phase transitions, self-organization, and emergent phenomena across different domains — from physical systems to the Earth's climate and ecological networks.
@@ -84,20 +91,6 @@ This includes studying phase transitions, self-organization, and emergent phenom
     </div>
   </div>
 
-  <div class="research-card">
-    <div style="display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;">
-      <div style="flex: 2; min-width: 250px;">
-        <div class="card-badge-wrapper">
-          <span class="resource-badge">Biophysics</span>
-        </div>
-        <h3>Subcellular biological dynamics</h3>
-        <p>Tracking the real-time three-dimensional localization, interaction, and confinement of molecules and motor proteins (e.g., myosin, SNAREs) to understand the nanoscale motion and complex organization within living systems.</p>
-      </div>
-      <div style="flex: 1; min-width: 150px; text-align: center;">
-  {% include figure.liquid path="assets/img/topical/biophysics.png" class="img-fluid rounded" width="auto" max-height="120px" zoomable=true avoid_scaling=true %}
-</div>
-    </div>
-  </div>
 </div>
 
 ---

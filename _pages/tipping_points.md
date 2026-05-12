@@ -8,9 +8,22 @@ nav: false
 
 <div class="research-page" markdown="1">
 
-Climate tipping points are thresholds at which small changes in external conditions can trigger large, often irreversible shifts in the state of the Earth system. Understanding these critical transitions is essential for anticipating and potentially preventing catastrophic changes in the climate.
-
-My work focuses on identifying early-warning signals and understanding the mechanisms that drive the Earth system toward — or away from — tipping points. This includes studying teleconnections between distant components of the Earth system, such as the links between Amazon deforestation, Tibetan snow cover, and Antarctic ice loss.
+<div style="display: flex; align-items: center; gap: 2rem; flex-wrap: wrap; margin-bottom: 2rem;">
+  <div style="flex: 2; min-width: 300px;">
+    <p>Climate tipping points are thresholds at which small changes in external conditions can trigger large, often irreversible shifts in the state of the Earth system. Understanding these critical transitions is essential for anticipating and potentially preventing catastrophic changes in the climate.</p>
+    
+    <p>My work focuses on identifying early-warning signals and understanding the mechanisms that drive the Earth system toward — or away from — tipping points. This includes studying teleconnections between distant components of the Earth system, such as the links between Amazon deforestation, Tibetan snow cover, and Antarctic ice loss.</p>
+  </div>
+  
+  <div style="flex: 1; min-width: 250px; text-align: center;">
+    {% include figure.liquid path="assets/img/pnas.jpeg" class="img-fluid rounded" style="box-shadow: 0 4px 15px rgba(0,0,0,0.1);" width="100%" zoomable=true avoid_scaling=true %}
+    <div class="caption" style="margin-top: 0.5rem; font-size: 0.85rem;">
+      <a href="https://doi.org/10.1073/pnas.1810141115" target="_blank" style="color: var(--global-text-color-light); text-decoration: underline;">
+        Steffen et al., PNAS, 2026
+      </a>
+    </div>
+  </div>
+</div>
 
 ## Key topics
 <div class="resource-list">

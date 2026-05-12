@@ -8,9 +8,23 @@ nav: false
 
 <div class="research-page" markdown="1">
 
-Critical phenomena describe the behavior of physical systems near continuous phase transitions, where correlation lengths diverge and the system exhibits scale-invariant properties. My research investigates these phenomena across different physical systems, with a focus on universality and renormalization group theory.
 
-Understanding critical phenomena not only deepens our knowledge of fundamental physics but also provides powerful theoretical tools applicable to Earth system science and other fields.
+<div style="display: flex; align-items: center; gap: 2rem; flex-wrap: wrap; margin-bottom: 2rem;">
+  <div style="flex: 2; min-width: 300px;">
+    <p>Critical phenomena describe the behavior of physical systems near continuous phase transitions, where correlation lengths diverge and the system exhibits scale-invariant properties. My research investigates these phenomena across different physical systems, with a focus on universality and renormalization group theory.</p>
+
+    <p>Understanding critical phenomena not only deepens our knowledge of fundamental physics but also provides powerful theoretical tools applicable to Earth system science and other fields.</p>
+  </div>
+  
+  <div style="flex: 1; min-width: 250px; text-align: center;">
+    {% include figure.liquid path="assets/img/topical/critical_phenomena.png" class="img-fluid rounded" style="box-shadow: 0 4px 15px rgba(0,0,0,0.1);" width="100%" zoomable=true avoid_scaling=true %}
+    <div class="caption" style="margin-top: 0.5rem; font-size: 0.85rem;">
+      <a href="https://aleksas.eu/projects/chiral-dynamics/" target="_blank" style="color: var(--global-text-color-light); text-decoration: underline;">
+        Spontaneous symmetry breaking in $O(4)$ potential
+      </a>
+    </div>
+  </div>
+</div>
 
 ## Key topics
 
