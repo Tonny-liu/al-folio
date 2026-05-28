@@ -343,7 +343,7 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Citation data
   const years = [2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026];
-  const citations = [1, 5, 7, 10, 41, 59, 106, 80]; // Actual citation data from papers
+  const citations = [1, 5, 7, 10, 41, 59, 106, 94]; // Actual citation data from papers
   
   const option = {
     title: {
