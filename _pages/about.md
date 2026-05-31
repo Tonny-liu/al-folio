@@ -2,19 +2,21 @@
 layout: about
 title: about
 permalink: /
+display_name: Teng Liu (刘腾)
 subtitle: <i>Postdoc at Technical University of Munich</i>
 
 profile:
   align: right
   image: photo.jpg
   image_circular: False # crops the image to make it circular
-  more_info: >
-    <p>85521 Ottobrunn</p>
-    <p>Lise-Meitner-Straße 9-11</p>
-    <p>Munich, Germany</p>
 
 selected_papers: false # includes a list of papers marked as "selected={true}"
-social: true # includes social icons at the bottom of the page
+social: true # contact + visiting address footer at the bottom of the page
+
+contact_footer:
+  visiting_address: "Lise-Meitner-Straße 9-11, 85521 Ottobrunn, Munich, Germany"
+  map_image: ottobrunn-map.png
+  map_alt: "Map of Ottobrunn, Munich area"
 
 announcements:
   enabled: true # includes a list of news items

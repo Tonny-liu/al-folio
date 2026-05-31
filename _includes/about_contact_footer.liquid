@@ -1,0 +1,121 @@
+{% assign cf = page.contact_footer %}
+{% assign map_file = cf.map_image | default: 'ottobrunn-map.png' %}
+{% assign map_path = map_file | prepend: 'assets/img/' %}
+{% assign visit_addr = cf.visiting_address | default: 'Lise-Meitner-Straße 9-11, 85521 Ottobrunn, Munich, Germany' %}
+
+<section class="about-contact-footer" aria-label="Contact and visiting address">
+  <div class="about-contact-grid">
+    <div class="about-contact-col about-contact-col--links">
+      <h3 class="about-contact-heading">Contact</h3>
+      <ul class="about-contact-link-list">
+        {% for social in site.data.socials %}
+          {% assign link_href = '' %}
+          {% assign link_label = '' %}
+          {% assign link_icon = '' %}
+          {% case social[0] %}
+            {% when 'email' %}
+              {% capture link_href %}mailto:{{ social[1] | encode_email }}{% endcapture %}
+              {% assign link_label = social[1] %}
+              {% assign link_icon = 'fa-solid fa-envelope' %}
+            {% when 'scholar_userid' %}
+              {% assign link_href = 'https://scholar.google.com/citations?user=' | append: social[1] %}
+              {% assign link_label = 'Google Scholar' %}
+              {% assign link_icon = 'ai ai-google-scholar' %}
+            {% when 'research_gate_profile' %}
+              {% if social[1] contains '://' %}
+                {% assign link_href = social[1] %}
+              {% else %}
+                {% assign link_href = 'https://www.researchgate.net/profile/' | append: social[1] %}
+              {% endif %}
+              {% assign link_label = 'ResearchGate' %}
+              {% assign link_icon = 'ai ai-researchgate' %}
+            {% when 'github_username' %}
+              {% assign link_href = 'https://github.com/' | append: social[1] %}
+              {% assign link_label = 'Github' %}
+              {% assign link_icon = 'fa-brands fa-github' %}
+            {% when 'orcid_id' %}
+              {% assign link_href = 'https://orcid.org/' | append: social[1] %}
+              {% assign link_label = 'ORCID' %}
+              {% assign link_icon = 'ai ai-orcid' %}
+            {% when 'linkedin_username' %}
+              {% assign link_href = 'https://www.linkedin.com/in/' | append: social[1] %}
+              {% assign link_label = 'LinkedIn' %}
+              {% assign link_icon = 'fa-brands fa-linkedin' %}
+            {% when 'dblp_url' %}
+              {% assign link_href = social[1] %}
+              {% assign link_label = 'DBLP' %}
+              {% assign link_icon = 'ai ai-dblp' %}
+            {% when 'semanticscholar_id' %}
+              {% if social[1] contains '://' %}
+                {% assign link_href = social[1] %}
+              {% else %}
+                {% assign link_href = 'https://www.semanticscholar.org/author/' | append: social[1] %}
+              {% endif %}
+              {% assign link_label = 'Semantic Scholar' %}
+              {% assign link_icon = 'ai ai-semantic-scholar' %}
+            {% when 'scopus_id' %}
+              {% assign link_href = 'https://www.scopus.com/authid/detail.uri?authorId=' | append: social[1] %}
+              {% assign link_label = 'Scopus' %}
+              {% assign link_icon = 'ai ai-scopus' %}
+            {% when 'inspirehep_id' %}
+              {% assign link_href = 'https://inspirehep.net/authors/' | append: social[1] %}
+              {% assign link_label = 'Inspire HEP' %}
+              {% assign link_icon = 'ai ai-inspire' %}
+            {% when 'work_url' %}
+              {% assign link_href = social[1] %}
+              {% assign link_label = 'Work' %}
+              {% assign link_icon = 'fa-solid fa-briefcase' %}
+            {% when 'x_username' %}
+              {% assign link_href = 'https://twitter.com/' | append: social[1] %}
+              {% assign link_label = 'X' %}
+              {% assign link_icon = 'fa-brands fa-x-twitter' %}
+            {% when 'bluesky_url' %}
+              {% assign link_href = social[1] %}
+              {% assign link_label = 'Bluesky' %}
+              {% assign link_icon = 'fa-brands fa-bluesky' %}
+            {% when 'mastodon_username' %}
+              {% assign link_href = 'https://' | append: social[1] %}
+              {% assign link_label = 'Mastodon' %}
+              {% assign link_icon = 'fa-brands fa-mastodon' %}
+            {% when 'custom_social' %}
+              {% assign link_href = social[1].url %}
+              {% assign link_label = social[1].title %}
+              {% assign link_icon = 'fa-solid fa-link' %}
+          {% endcase %}
+          {% if link_href != '' and link_label != '' %}
+            <li>
+              <a
+                href="{{ link_href }}"
+                {% unless social[0] == 'email' %}target="_blank" rel="noopener noreferrer"{% endunless %}
+              >
+                <i class="{{ link_icon }}" aria-hidden="true"></i>
+                <span>{{ link_label }}</span>
+              </a>
+            </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+      {% if site.contact_note %}
+        <p class="about-contact-note">{{ site.contact_note }}</p>
+      {% endif %}
+    </div>
+
+    <div class="about-contact-col about-contact-col--map">
+      <h3 class="about-contact-heading">Visiting address</h3>
+      <p class="about-contact-address">
+        <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
+        <span>{{ visit_addr }}</span>
+      </p>
+      <figure class="about-contact-map">
+        {% include figure.liquid
+          loading="lazy"
+          path=map_path
+          class="img-fluid rounded about-contact-map-img"
+          alt=cf.map_alt
+          avoid_scaling=true
+          zoomable=true
+        %}
+      </figure>
+    </div>
+  </div>
+</section>

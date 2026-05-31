@@ -8,6 +8,10 @@
 # dblp_url: # your DBLP profile url
 # discord_id: # your discord id (18-digit unique numerical identifier)
 email: teng.liu@tum.de # your email address
+scholar_userid: 3g_VFZgAAAAJ # your Google Scholar ID (without &hl parameter)
+research_gate_profile: https://www.researchgate.net/profile/Teng-Liu-15?ev=hdr_xprf # your profile on ResearchGate
+semanticscholar_id: https://www.semanticscholar.org/author/Teng-Liu/2110033756 # Semantic Scholar author page
+orcid_id: 0000-0003-4971-1703 # your ORCID ID
 # facebook_id: # your facebook id
 # flickr_id: # your flickr id
 # github_username: # your GitHub user name
@@ -23,14 +27,11 @@ email: teng.liu@tum.de # your email address
 # linkedin_username: # your LinkedIn user name
 # mastodon_username: # your mastodon instance+username in the format instance.tld/@username
 # medium_username: # your Medium username
-orcid_id: 0000-0003-4971-1703 # your ORCID ID
 # osf_id: # your OSF ID
 # pinterest_id: # your pinterest id
 # publons_id: # your ID on Publons
 # quora_username: # your Quora username
-# research_gate_profile: https://www.researchgate.net/profile/Teng-Liu-15?ev=hdr_xprf # your profile on ResearchGate
 # rss_icon: true # set to true to show the RSS icon
-scholar_userid: 3g_VFZgAAAAJ # your Google Scholar ID (without &hl parameter)
 # scopus_id: # your profile on Scopus
 # semanticscholar_id: # your Semantic Scholar ID
 # spotify_id: # your spotify id

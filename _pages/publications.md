@@ -283,11 +283,8 @@ years: [2026, 2025, 2024, 2023, 2022, 2021, 2020, 2019]
   height: calc(var(--pub-stat-equal-height) - 1.75rem);
   min-height: 300px;
   flex: 0 0 auto;
-  border: 1px solid var(--global-divider-color);
-  border-radius: 6px;
   overflow: hidden;
   box-sizing: border-box;
-  background-color: var(--global-bg-color);
 }
 
 .coauthor-graph-frame .pub-chart,
@@ -506,37 +503,37 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  const COAUTHOR_NODE_SIZE = 20;
-  // matplotlib colormap "RdPu" (ColorBrewer Red-Purple sequential)
-  const COAUTHOR_RDPU_STOPS = [
-    '#fff7f3', '#fde0dd', '#fcc5c0', '#fa9fb5', '#f768a1',
-    '#dd3497', '#ae017e', '#7a0177', '#49006a'
+  const COAUTHOR_NODE_SIZE = 23;
+  // Blue → purple sequential (ColorBrewer "BuPu" style)
+  const COAUTHOR_COLOR_STOPS = [
+    '#f7fcfd', '#e0ecf4', '#bfd3e6', '#9ebcda', '#8c96c6',
+    '#8c6bb1', '#88419d', '#810f7c', '#4d004b'
   ];
   const COAUTHOR_NODE_DIM_COLOR = '#c4c4c4';
   const COAUTHOR_LABEL_DIM_COLOR = '#a3a3a3';
 
-  function coauthorColorFromRdPu(t) {
+  function coauthorColorFromScale(t) {
     const ratio = Math.min(1, Math.max(0, t));
-    const segmentCount = COAUTHOR_RDPU_STOPS.length - 1;
+    const segmentCount = COAUTHOR_COLOR_STOPS.length - 1;
     const pos = ratio * segmentCount;
     const index = Math.min(segmentCount - 1, Math.floor(pos));
     const localT = pos - index;
     return coauthorInterpolateColor(
-      COAUTHOR_RDPU_STOPS[index],
-      COAUTHOR_RDPU_STOPS[index + 1],
+      COAUTHOR_COLOR_STOPS[index],
+      COAUTHOR_COLOR_STOPS[index + 1],
       localT
     );
   }
 
   function coauthorColorForCount(count, minCount, maxCount) {
     if (maxCount <= minCount) {
-      return COAUTHOR_RDPU_STOPS[COAUTHOR_RDPU_STOPS.length - 1];
+      return COAUTHOR_COLOR_STOPS[COAUTHOR_COLOR_STOPS.length - 1];
     }
     const logCount = Math.log(count);
     const logMin = Math.log(minCount);
     const logMax = Math.log(maxCount);
     const t = (logCount - logMin) / (logMax - logMin);
-    return coauthorColorFromRdPu(t);
+    return coauthorColorFromScale(t);
   }
 
   function coauthorInterpolateColor(colorA, colorB, t) {
@@ -560,34 +557,61 @@ document.addEventListener('DOMContentLoaded', function() {
     };
   }
 
+  function coauthorNodeLuminance(hex) {
+    const rgb = coauthorHexToRgb(hex);
+    return (0.299 * rgb.r + 0.587 * rgb.g + 0.114 * rgb.b) / 255;
+  }
+
+  function coauthorGlowItemStyle(fillColor, overrides) {
+    overrides = overrides || {};
+    const lum = coauthorNodeLuminance(fillColor);
+    const rgb = coauthorHexToRgb(fillColor);
+    const shadowColor = lum > 0.72
+      ? 'rgba(70, 105, 155, 0.22)'
+      : 'rgba(' + Math.round(rgb.r * 0.5) + ',' + Math.round(rgb.g * 0.45) + ',' + Math.round(rgb.b * 0.7) + ', 0.16)';
+    const borderColor = lum > 0.72
+      ? 'rgba(90, 120, 170, 0.38)'
+      : 'rgba(' + Math.min(255, rgb.r + 50) + ',' + Math.min(255, rgb.g + 40) + ',' + Math.min(255, rgb.b + 65) + ', 0.28)';
+
+    return Object.assign({
+      color: fillColor,
+      opacity: 1,
+      borderColor: borderColor,
+      borderWidth: 1.5,
+      shadowBlur: 6,
+      shadowColor: shadowColor,
+      shadowOffsetX: 0,
+      shadowOffsetY: 0
+    }, overrides);
+  }
+
   function highlightCoauthorNode(selectedName) {
     if (!coauthorChart || !coauthorGraphNodes) return;
 
     coauthorGraphNodes.forEach(function(node) {
-      if (!node.itemStyle) node.itemStyle = {};
       const nodeKey = node.name || node.id;
       const isSelected = selectedName && nodeKey === selectedName;
-      const baseColor = node.baseColor || COAUTHOR_RDPU_STOPS[COAUTHOR_RDPU_STOPS.length - 1];
+      const baseColor = node.baseColor || COAUTHOR_COLOR_STOPS[COAUTHOR_COLOR_STOPS.length - 1];
 
       if (selectedName) {
         if (isSelected) {
-          node.itemStyle.color = baseColor;
-          node.itemStyle.opacity = 1;
-          node.itemStyle.borderColor = '#49006a';
-          node.itemStyle.borderWidth = 3;
+          node.itemStyle = coauthorGlowItemStyle(baseColor, {
+            borderColor: '#4d004b',
+            borderWidth: 2,
+            shadowBlur: 10,
+            shadowColor: 'rgba(77, 0, 75, 0.3)'
+          });
           delete node.label;
         } else {
-          node.itemStyle.color = COAUTHOR_NODE_DIM_COLOR;
-          node.itemStyle.opacity = 0.55;
-          delete node.itemStyle.borderColor;
-          delete node.itemStyle.borderWidth;
+          node.itemStyle = coauthorGlowItemStyle(COAUTHOR_NODE_DIM_COLOR, {
+            opacity: 0.55,
+            shadowBlur: 4,
+            shadowColor: 'rgba(140, 140, 140, 0.12)'
+          });
           node.label = { color: COAUTHOR_LABEL_DIM_COLOR };
         }
       } else {
-        node.itemStyle.color = baseColor;
-        node.itemStyle.opacity = 1;
-        delete node.itemStyle.borderColor;
-        delete node.itemStyle.borderWidth;
+        node.itemStyle = coauthorGlowItemStyle(baseColor);
         delete node.label;
       }
     });
@@ -970,9 +994,7 @@ document.addEventListener('DOMContentLoaded', function() {
         baseColor: baseColor,
         symbolSize: COAUTHOR_NODE_SIZE,
         draggable: true,
-        itemStyle: {
-          color: baseColor
-        }
+        itemStyle: coauthorGlowItemStyle(baseColor)
       });
     });
 
