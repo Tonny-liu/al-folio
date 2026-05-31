@@ -18,7 +18,8 @@ module Jekyll
       self_last_names  = Array(scholar_cfg['last_name']).map  { |s| normalize_name_part(s) }
       self_first_names = Array(scholar_cfg['first_name']).map { |s| normalize_name_part(s) }
 
-      cache_key = [bib_path, self_last_names.sort, self_first_names.sort].hash
+      bib_mtime = File.exist?(bib_path) ? File.mtime(bib_path).to_i : 0
+      cache_key = [bib_path, bib_mtime, self_last_names.sort, self_first_names.sort].hash
       if Cache.key?(cache_key)
         return Cache[cache_key]
       end
@@ -37,9 +38,8 @@ module Jekyll
         raw = raw.sub(/\A---.*?---\s*/m, '')
       end
 
-      # Scan each author={...} block; treat each as one paper
-      raw.scan(/author\s*=\s*\{([^}]*)\}/mi) do |match|
-        author_block = match.first.to_s
+      # Scan author={...} with brace matching (handles names like Rockstr{\"o}m)
+      extract_braced_author_blocks(raw).each do |author_block|
         names = author_block.split(/\band\b/i).map { |n| n.strip }.reject(&:empty?)
         parsed = names.map { |n| split_name(n) }
 
@@ -84,12 +84,44 @@ module Jekyll
 
     private
 
+    def extract_braced_author_blocks(text)
+      blocks = []
+      text.enum_for(:scan, /author\s*=\s*\{/mi).each do
+        start_pos = Regexp.last_match.end(0) - 1
+        depth = 0
+        i = start_pos
+        while i < text.length
+          ch = text[i]
+          if ch == '{'
+            depth += 1
+          elsif ch == '}'
+            depth -= 1
+            if depth.zero?
+              blocks << text[start_pos + 1...i]
+              break
+            end
+          end
+          i += 1
+        end
+      end
+      blocks
+    end
+
+    def clean_bibtex_name_fragment(value)
+      value.to_s
+           .gsub(/\{\\"([a-zA-Z])\}/, '\1')
+           .gsub(/[{}]/, '')
+           .gsub(/\\+/, '')
+           .gsub('"', '')
+           .strip
+    end
+
     # Very lightweight BibTeX name splitter:
     # - "Last, First"  -> { first: First, last: Last }
     # - "First Last"   -> { first: First, last: Last }
     def split_name(raw)
-      s = raw.to_s.strip
-      s = s.gsub(/[{}]/, '')
+      s = clean_bibtex_name_fragment(raw)
+      return { first: '', last: '' } if s.empty?
 
       if s.include?(',')
         last, first = s.split(',', 2)

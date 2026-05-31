@@ -279,8 +279,10 @@ years: [2026, 2025, 2024, 2023, 2022, 2021, 2020, 2019]
 
 .coauthor-graph-frame {
   width: 100%;
-  flex: 1 1 auto;
-  min-height: 0;
+  /* Explicit height avoids flex collapse on mobile Safari */
+  height: calc(var(--pub-stat-equal-height) - 1.75rem);
+  min-height: 300px;
+  flex: 0 0 auto;
   border: 1px solid var(--global-divider-color);
   border-radius: 6px;
   overflow: hidden;
@@ -288,9 +290,26 @@ years: [2026, 2025, 2024, 2023, 2022, 2021, 2020, 2019]
   background-color: var(--global-bg-color);
 }
 
-.coauthor-graph-frame .pub-chart {
+.coauthor-graph-frame .pub-chart,
+#coauthor-graph {
   width: 100%;
   height: 100%;
+  min-height: 300px;
+}
+
+@media (max-width: 768px) {
+  .pub-stats-wrapper {
+    --pub-stat-equal-height: 340px;
+  }
+
+  .coauthor-graph-frame {
+    min-height: 280px;
+  }
+
+  .coauthor-graph-frame .pub-chart,
+  #coauthor-graph {
+    min-height: 280px;
+  }
 }
 
 @media (min-width: 992px) {
@@ -793,6 +812,8 @@ document.addEventListener('DOMContentLoaded', function() {
   const COAUTHOR_GRAPH_INSET = { top: 8, right: 8, bottom: 8, left: 8 };
   const COAUTHOR_NODE_MARGIN = 32;
   const COAUTHOR_LABEL_PAD_RIGHT = 52;
+  const COAUTHOR_INITIAL_ZOOM = 0.68;
+  let coauthorInitialViewSet = false;
 
   function getCoauthorGraphBounds() {
     if (!coauthorChart) return null;
@@ -897,9 +918,31 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 32);
   }
 
+  function resizeCoauthorChart() {
+    if (!coauthorChart) return;
+    coauthorChart.resize();
+    scheduleCoauthorNodeClamp();
+  }
+
+  function applyCoauthorInitialView() {
+    if (!coauthorChart || coauthorInitialViewSet) return;
+    coauthorInitialViewSet = true;
+    coauthorChart.setOption({
+      series: [{
+        zoom: COAUTHOR_INITIAL_ZOOM,
+        center: ['50%', '50%']
+      }]
+    }, { silent: true });
+  }
+
   // Initialize coauthor network graph
   const graphDom = document.getElementById('coauthor-graph');
-  if (graphDom && Object.keys(coauthorCounts).length > 0) {
+  const coauthorGraphFrame = document.querySelector('.coauthor-graph-frame');
+
+  function initCoauthorNetworkChart() {
+    if (!graphDom || coauthorChart || !Object.keys(coauthorCounts).length) return;
+    if (graphDom.offsetWidth < 1 || graphDom.offsetHeight < 1) return;
+
     coauthorChart = echarts.init(graphDom);
 
     const nodes = [];
@@ -952,6 +995,9 @@ document.addEventListener('DOMContentLoaded', function() {
           layout: 'force',
           roam: true,
           draggable: true,
+          zoom: COAUTHOR_INITIAL_ZOOM,
+          center: ['50%', '50%'],
+          scaleLimit: { min: 0.35, max: 2.5 },
           data: nodes,
           edges: [],
           left: COAUTHOR_GRAPH_INSET.left,
@@ -981,7 +1027,10 @@ document.addEventListener('DOMContentLoaded', function() {
     scheduleCoauthorNodeClamp();
     bindCoauthorDragClamp();
 
-    coauthorChart.on('finished', clampCoauthorNodes);
+    coauthorChart.on('finished', function() {
+      clampCoauthorNodes();
+      applyCoauthorInitialView();
+    });
 
     coauthorChart.on('dblclick', function(params) {
       if (params.dataType !== 'node') return;
@@ -994,6 +1043,23 @@ document.addEventListener('DOMContentLoaded', function() {
         applyCoauthorFilter(nodeName);
       }
     });
+
+    resizeCoauthorChart();
+    requestAnimationFrame(resizeCoauthorChart);
+    setTimeout(function() {
+      resizeCoauthorChart();
+      applyCoauthorInitialView();
+    }, 150);
+    setTimeout(applyCoauthorInitialView, 700);
+  }
+
+  if (graphDom && Object.keys(coauthorCounts).length > 0) {
+    initCoauthorNetworkChart();
+    if (!coauthorChart) {
+      requestAnimationFrame(initCoauthorNetworkChart);
+      setTimeout(initCoauthorNetworkChart, 150);
+      setTimeout(initCoauthorNetworkChart, 500);
+    }
   }
 
   // Handle window resize and container layout changes
@@ -1001,25 +1067,35 @@ document.addEventListener('DOMContentLoaded', function() {
     if (myChart) {
       myChart.resize();
     }
-    if (coauthorChart) {
-      coauthorChart.resize();
-      scheduleCoauthorNodeClamp();
+    if (!coauthorChart) {
+      initCoauthorNetworkChart();
     }
+    resizeCoauthorChart();
   });
   
   const wrapper = document.querySelector('.pub-stats-wrapper');
   if (wrapper) {
     resizeObserver.observe(wrapper);
   }
+  if (coauthorGraphFrame) {
+    resizeObserver.observe(coauthorGraphFrame);
+  }
 
   window.addEventListener('resize', function() {
     if (myChart) {
       myChart.resize();
     }
-    if (coauthorChart) {
-      coauthorChart.resize();
-      scheduleCoauthorNodeClamp();
+    if (!coauthorChart) {
+      initCoauthorNetworkChart();
     }
+    resizeCoauthorChart();
+  });
+
+  window.addEventListener('load', function() {
+    if (!coauthorChart) {
+      initCoauthorNetworkChart();
+    }
+    resizeCoauthorChart();
   });
 });
 </script>
