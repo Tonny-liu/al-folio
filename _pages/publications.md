@@ -23,8 +23,11 @@ years: [2026, 2025, 2024, 2023, 2022, 2021, 2020, 2019]
   <div class="pub-stat-block">
     <div id="citation-chart" class="pub-chart"></div>
   </div>
-  <div class="pub-stat-block">
-    <div id="coauthor-graph" class="pub-chart pub-graph"></div>
+  <div class="pub-stat-block coauthor-graph-block">
+    <div class="coauthor-graph-heading">Coauthor Network</div>
+    <div class="coauthor-graph-frame">
+      <div id="coauthor-graph" class="pub-chart"></div>
+    </div>
   </div>
 </div>
 <script id="coauthor-counts-data" type="application/json">
@@ -34,6 +37,11 @@ years: [2026, 2025, 2024, 2023, 2022, 2021, 2020, 2019]
 <!-- Bibsearch Feature -->
 
 {% include bib_search.liquid %}
+
+<div id="coauthor-filter-banner" class="coauthor-filter-banner" hidden>
+  <span>Showing publications with <strong id="coauthor-filter-name"></strong></span>
+  <button type="button" id="coauthor-filter-clear" class="coauthor-filter-clear">Clear</button>
+</div>
 
 <div class="publications">
   {% for y in page.years %}
@@ -239,6 +247,7 @@ years: [2026, 2025, 2024, 2023, 2022, 2021, 2020, 2019]
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  --pub-stat-equal-height: 368px;
 }
 
 .pub-stat-block {
@@ -247,11 +256,41 @@ years: [2026, 2025, 2024, 2023, 2022, 2021, 2020, 2019]
 
 .pub-chart {
   width: 100%;
-  height: 300px;
 }
 
-.pub-graph {
-  height: 420px;
+#citation-chart {
+  height: var(--pub-stat-equal-height);
+}
+
+.coauthor-graph-block {
+  height: var(--pub-stat-equal-height);
+  display: flex;
+  flex-direction: column;
+}
+
+.coauthor-graph-heading {
+  text-align: center;
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  flex: 0 0 auto;
+  color: var(--global-text-color);
+}
+
+.coauthor-graph-frame {
+  width: 100%;
+  flex: 1 1 auto;
+  min-height: 0;
+  border: 1px solid var(--global-divider-color);
+  border-radius: 6px;
+  overflow: hidden;
+  box-sizing: border-box;
+  background-color: var(--global-bg-color);
+}
+
+.coauthor-graph-frame .pub-chart {
+  width: 100%;
+  height: 100%;
 }
 
 @media (min-width: 992px) {
@@ -260,6 +299,43 @@ years: [2026, 2025, 2024, 2023, 2022, 2021, 2020, 2019]
     align-items: stretch;
     gap: 2.5rem;
   }
+}
+
+.coauthor-filter-banner {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 0.85rem 0 1.25rem 0;
+  padding: 0.65rem 1rem;
+  border: 1px solid var(--global-theme-color);
+  border-radius: 6px;
+  background-color: rgba(128, 128, 128, 0.08);
+  font-size: 0.95rem;
+}
+
+.coauthor-filter-banner > span {
+  font-weight: 600;
+}
+
+.coauthor-filter-banner[hidden] {
+  display: none !important;
+}
+
+.coauthor-filter-clear {
+  margin-left: auto;
+  padding: 0.25rem 0.75rem;
+  border: 1px solid var(--global-theme-color);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--global-theme-color);
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.coauthor-filter-clear:hover {
+  background-color: var(--global-theme-color);
+  color: var(--global-bg-color);
 }
 </style>
 
@@ -302,6 +378,247 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
+  let activeCoauthorFilter = null;
+
+  function normalizeAuthorName(name) {
+    return name
+      .toLowerCase()
+      .replace(/[*∗†‡§¶‖&^#]/g, '')
+      .replace(/[^a-z\u00C0-\u024F\s\-']/gi, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  function authorNamesMatch(a, b) {
+    const na = normalizeAuthorName(a);
+    const nb = normalizeAuthorName(b);
+    if (!na || !nb) return false;
+    if (na === nb) return true;
+
+    const partsA = na.split(/\s+/);
+    const partsB = nb.split(/\s+/);
+    const lastA = partsA[partsA.length - 1];
+    const lastB = partsB[partsB.length - 1];
+    if (lastA !== lastB) return false;
+
+    if (partsA.length === 1 || partsB.length === 1) return true;
+    const firstA = partsA[0];
+    const firstB = partsB[0];
+    return firstA === firstB || firstA.startsWith(firstB) || firstB.startsWith(firstA);
+  }
+
+  function parseAuthorNamesFromBlock(authorEl) {
+    const names = [];
+
+    authorEl.querySelectorAll('em, a').forEach(function(el) {
+      const name = el.textContent.replace(/\s+/g, ' ').trim();
+      if (name) names.push(name);
+    });
+
+    const clone = authorEl.cloneNode(true);
+    clone.querySelectorAll('em, a, .more-authors, i, .fa-solid').forEach(function(n) {
+      n.remove();
+    });
+    clone.textContent
+      .replace(/\s+/g, ' ')
+      .trim()
+      .split(/,\s*|\s+and\s+/i)
+      .forEach(function(part) {
+        part = part.trim();
+        if (part && !/\bmore author/i.test(part)) names.push(part);
+      });
+
+    const moreSpan = authorEl.querySelector('.more-authors');
+    if (moreSpan) {
+      const onclick = moreSpan.getAttribute('onclick') || '';
+      const match = onclick.match(/\?\s*'((?:\\'|[^'])*)'\s*:/);
+      if (match) {
+        match[1]
+          .replace(/\\'/g, "'")
+          .replace(/<[^>]+>/g, '')
+          .split(/,\s*/)
+          .forEach(function(part) {
+            part = part.trim();
+            if (part) names.push(part);
+          });
+      }
+    }
+
+    const seen = {};
+    return names
+      .map(function(n) { return n.replace(/\s+/g, ' ').trim(); })
+      .filter(function(n) {
+        if (!n || seen[n]) return false;
+        seen[n] = true;
+        return true;
+      });
+  }
+
+  function publicationHasCoauthor(li, coauthorName) {
+    const authorEl = li.querySelector('.author');
+    if (!authorEl) return false;
+    return parseAuthorNamesFromBlock(authorEl).some(function(name) {
+      return authorNamesMatch(name, coauthorName);
+    });
+  }
+
+  function updateYearSectionsAfterFilter() {
+    document.querySelectorAll('.year-section').forEach(function(section) {
+      const allItems = section.querySelectorAll('ol.bibliography > li');
+      const hiddenItems = section.querySelectorAll('ol.bibliography > li.unloaded');
+      if (allItems.length > 0 && allItems.length === hiddenItems.length) {
+        section.classList.add('unloaded');
+      } else {
+        section.classList.remove('unloaded');
+      }
+    });
+  }
+
+  function updateCoauthorFilterBanner() {
+    const banner = document.getElementById('coauthor-filter-banner');
+    const nameEl = document.getElementById('coauthor-filter-name');
+    if (!banner || !nameEl) return;
+
+    if (activeCoauthorFilter) {
+      nameEl.textContent = activeCoauthorFilter;
+      banner.hidden = false;
+    } else {
+      banner.hidden = true;
+    }
+  }
+
+  const COAUTHOR_NODE_SIZE = 20;
+  // matplotlib colormap "RdPu" (ColorBrewer Red-Purple sequential)
+  const COAUTHOR_RDPU_STOPS = [
+    '#fff7f3', '#fde0dd', '#fcc5c0', '#fa9fb5', '#f768a1',
+    '#dd3497', '#ae017e', '#7a0177', '#49006a'
+  ];
+  const COAUTHOR_NODE_DIM_COLOR = '#c4c4c4';
+  const COAUTHOR_LABEL_DIM_COLOR = '#a3a3a3';
+
+  function coauthorColorFromRdPu(t) {
+    const ratio = Math.min(1, Math.max(0, t));
+    const segmentCount = COAUTHOR_RDPU_STOPS.length - 1;
+    const pos = ratio * segmentCount;
+    const index = Math.min(segmentCount - 1, Math.floor(pos));
+    const localT = pos - index;
+    return coauthorInterpolateColor(
+      COAUTHOR_RDPU_STOPS[index],
+      COAUTHOR_RDPU_STOPS[index + 1],
+      localT
+    );
+  }
+
+  function coauthorColorForCount(count, minCount, maxCount) {
+    if (maxCount <= minCount) {
+      return COAUTHOR_RDPU_STOPS[COAUTHOR_RDPU_STOPS.length - 1];
+    }
+    const logCount = Math.log(count);
+    const logMin = Math.log(minCount);
+    const logMax = Math.log(maxCount);
+    const t = (logCount - logMin) / (logMax - logMin);
+    return coauthorColorFromRdPu(t);
+  }
+
+  function coauthorInterpolateColor(colorA, colorB, t) {
+    const a = coauthorHexToRgb(colorA);
+    const b = coauthorHexToRgb(colorB);
+    const ratio = Math.min(1, Math.max(0, t));
+    const r = Math.round(a.r + (b.r - a.r) * ratio);
+    const g = Math.round(a.g + (b.g - a.g) * ratio);
+    const bl = Math.round(a.b + (b.b - a.b) * ratio);
+    return '#' + [r, g, bl].map(function(v) {
+      return v.toString(16).padStart(2, '0');
+    }).join('');
+  }
+
+  function coauthorHexToRgb(hex) {
+    const normalized = hex.replace('#', '');
+    return {
+      r: parseInt(normalized.slice(0, 2), 16),
+      g: parseInt(normalized.slice(2, 4), 16),
+      b: parseInt(normalized.slice(4, 6), 16)
+    };
+  }
+
+  function highlightCoauthorNode(selectedName) {
+    if (!coauthorChart || !coauthorGraphNodes) return;
+
+    coauthorGraphNodes.forEach(function(node) {
+      if (!node.itemStyle) node.itemStyle = {};
+      const nodeKey = node.name || node.id;
+      const isSelected = selectedName && nodeKey === selectedName;
+      const baseColor = node.baseColor || COAUTHOR_RDPU_STOPS[COAUTHOR_RDPU_STOPS.length - 1];
+
+      if (selectedName) {
+        if (isSelected) {
+          node.itemStyle.color = baseColor;
+          node.itemStyle.opacity = 1;
+          node.itemStyle.borderColor = '#49006a';
+          node.itemStyle.borderWidth = 3;
+          delete node.label;
+        } else {
+          node.itemStyle.color = COAUTHOR_NODE_DIM_COLOR;
+          node.itemStyle.opacity = 0.55;
+          delete node.itemStyle.borderColor;
+          delete node.itemStyle.borderWidth;
+          node.label = { color: COAUTHOR_LABEL_DIM_COLOR };
+        }
+      } else {
+        node.itemStyle.color = baseColor;
+        node.itemStyle.opacity = 1;
+        delete node.itemStyle.borderColor;
+        delete node.itemStyle.borderWidth;
+        delete node.label;
+      }
+    });
+    coauthorChart.setOption({ series: [{ data: coauthorGraphNodes }] }, { silent: true });
+  }
+
+  function applyCoauthorFilter(coauthorName) {
+    activeCoauthorFilter = coauthorName || null;
+    updateCoauthorFilterBanner();
+    highlightCoauthorNode(activeCoauthorFilter);
+
+    const bibInput = document.getElementById('bibsearch');
+    if (bibInput && bibInput.value) {
+      bibInput.value = '';
+      bibInput.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+
+    document.querySelectorAll('.year-section ol.bibliography > li').forEach(function(li) {
+      const hide = activeCoauthorFilter ? !publicationHasCoauthor(li, activeCoauthorFilter) : false;
+      li.classList.toggle('unloaded', hide);
+    });
+
+    updateYearSectionsAfterFilter();
+
+    if (activeCoauthorFilter) {
+      const firstVisible = document.querySelector('.year-section:not(.unloaded) ol.bibliography > li:not(.unloaded)');
+      if (firstVisible) {
+        firstVisible.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }
+  }
+
+  function clearCoauthorFilter() {
+    applyCoauthorFilter(null);
+  }
+
+  const coauthorFilterClearBtn = document.getElementById('coauthor-filter-clear');
+  if (coauthorFilterClearBtn) {
+    coauthorFilterClearBtn.addEventListener('click', clearCoauthorFilter);
+  }
+
+  const bibsearchInput = document.getElementById('bibsearch');
+  if (bibsearchInput) {
+    bibsearchInput.addEventListener('input', function() {
+      if (activeCoauthorFilter && bibsearchInput.value.trim()) {
+        clearCoauthorFilter();
+      }
+    });
+  }
+
   // Fallback: build coauthor counts from rendered author lists (if bib parsing fails)
   function buildCoauthorCountsFromDom() {
     const coauthorCounts = {};
@@ -340,6 +657,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const chartDom = document.getElementById('citation-chart');
   const myChart = echarts.init(chartDom);
   let coauthorChart = null;
+  let coauthorGraphNodes = null;
   
   // Citation data
   const years = [2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026];
@@ -471,73 +789,158 @@ document.addEventListener('DOMContentLoaded', function() {
     coauthorCounts = buildCoauthorCountsFromDom();
   }
 
+  // Series padding inside the bordered frame; NODE_MARGIN is a hard keep-out zone from edges
+  const COAUTHOR_GRAPH_INSET = { top: 8, right: 8, bottom: 8, left: 8 };
+  const COAUTHOR_NODE_MARGIN = 32;
+  const COAUTHOR_LABEL_PAD_RIGHT = 52;
+
+  function getCoauthorGraphBounds() {
+    if (!coauthorChart) return null;
+    const w = coauthorChart.getWidth();
+    const h = coauthorChart.getHeight();
+    const plotW = w - COAUTHOR_GRAPH_INSET.left - COAUTHOR_GRAPH_INSET.right;
+    const plotH = h - COAUTHOR_GRAPH_INSET.top - COAUTHOR_GRAPH_INSET.bottom;
+    const m = COAUTHOR_NODE_MARGIN;
+    return {
+      minX: m,
+      maxX: plotW - m - COAUTHOR_LABEL_PAD_RIGHT,
+      minY: m,
+      maxY: plotH - m
+    };
+  }
+
+  function clampCoauthorNodes() {
+    if (!coauthorChart) return false;
+    const bounds = getCoauthorGraphBounds();
+    if (!bounds || bounds.maxX <= bounds.minX || bounds.maxY <= bounds.minY) return false;
+
+    const nodes = coauthorGraphNodes;
+    if (!nodes || !nodes.length) return false;
+
+    let changed = false;
+    nodes.forEach(function(node) {
+      if (node.x == null || node.y == null) return;
+      const r = (node.symbolSize || 10) / 2;
+      const minX = bounds.minX + r;
+      const maxX = bounds.maxX - r;
+      const minY = bounds.minY + r;
+      const maxY = bounds.maxY - r;
+      const nx = Math.min(maxX, Math.max(minX, node.x));
+      const ny = Math.min(maxY, Math.max(minY, node.y));
+      if (nx !== node.x || ny !== node.y) {
+        node.x = nx;
+        node.y = ny;
+        changed = true;
+      }
+    });
+
+    if (changed) {
+      coauthorChart.setOption({ series: [{ data: nodes }] }, { silent: true });
+    }
+    return changed;
+  }
+
+  function bindCoauthorDragClamp() {
+    if (!coauthorChart) return;
+    const zr = coauthorChart.getZr();
+    let draggingNode = false;
+
+    coauthorChart.on('mousedown', function(params) {
+      draggingNode = params.dataType === 'node';
+      if (draggingNode) clampCoauthorNodes();
+    });
+
+    zr.on('mousemove', function() {
+      if (draggingNode) clampCoauthorNodes();
+    });
+
+    zr.on('mouseup', function() {
+      if (draggingNode) {
+        draggingNode = false;
+        clampCoauthorNodes();
+      }
+    });
+
+    zr.on('globalout', function() {
+      draggingNode = false;
+    });
+  }
+
+  // e.g. "Sheng Fang" -> "S. Fang", "Xiaosong Song Chen" -> "X.S. Chen"
+  function abbreviateCoauthorName(name) {
+    if (!name) return '';
+    const parts = name.trim().split(/\s+/).filter(Boolean);
+    if (parts.length === 0) return '';
+    if (parts.length === 1) return parts[0];
+    const lastName = parts[parts.length - 1];
+    const givenInitials = parts
+      .slice(0, -1)
+      .map(function(part) {
+        return part.charAt(0).toUpperCase() + '.';
+      })
+      .join('');
+    return givenInitials + ' ' + lastName;
+  }
+
+  let coauthorClampTimer = null;
+  function scheduleCoauthorNodeClamp() {
+    clampCoauthorNodes();
+    if (coauthorClampTimer) return;
+    let ticks = 0;
+    coauthorClampTimer = setInterval(function() {
+      clampCoauthorNodes();
+      ticks += 1;
+      if (ticks >= 120) {
+        clearInterval(coauthorClampTimer);
+        coauthorClampTimer = null;
+      }
+    }, 32);
+  }
+
   // Initialize coauthor network graph
   const graphDom = document.getElementById('coauthor-graph');
   if (graphDom && Object.keys(coauthorCounts).length > 0) {
     coauthorChart = echarts.init(graphDom);
 
     const nodes = [];
-    const edges = [];
-    const centerId = 'Teng Liu';
-    const excludedCoauthors = ['jun chu', 'sang kwon lee','yatong qian', 'wei chen', 'quang quan nguyen', 'xingxiang chen', 'xianan qin'];
+    const excludedCoauthors = ['jun chu','sang kwon lee','yatong qian', 'wei chen', 'quang quan nguyen', 'xingxiang chen', 'xianan qin'];
+    const visibleCoauthors = [];
 
-    // Center node
-    nodes.push({
-      id: centerId,
-      symbolSize: 15,
-      category: 0,
-      draggable: true,
-      itemStyle: {
-        color: '#adadad' 
-      }
+    Object.keys(coauthorCounts).forEach(function(name) {
+      const count = coauthorCounts[name];
+      if (count <= 1) return;
+      const normName = name.toLowerCase();
+      if (excludedCoauthors.includes(normName)) return;
+      visibleCoauthors.push({ name: name, count: count });
     });
 
-    // Coauthor nodes (only include collaborators with > 2 joint papers, and not in exclusion list)
-    Object.keys(coauthorCounts).forEach(name => {
-      const count = coauthorCounts[name];
-      if (count <= 1) {
-        return;
-      }
-      const normName = name.toLowerCase();
-      if (excludedCoauthors.includes(normName)) {
-        return;
-      }
+    const paperCounts = visibleCoauthors.map(function(entry) { return entry.count; });
+    const minPaperCount = paperCounts.length ? Math.min.apply(null, paperCounts) : 1;
+    const maxPaperCount = paperCounts.length ? Math.max.apply(null, paperCounts) : 1;
+
+    visibleCoauthors.forEach(function(entry) {
+      const baseColor = coauthorColorForCount(entry.count, minPaperCount, maxPaperCount);
       nodes.push({
-        id: name,
-        name: name,
-        symbolSize: 7+Math.pow(count, 1.3) * 1.2,
-        category: 1,
+        id: entry.name,
+        name: entry.name,
+        paperCount: entry.count,
+        baseColor: baseColor,
+        symbolSize: COAUTHOR_NODE_SIZE,
         draggable: true,
         itemStyle: {
-        color: '#9085ab' 
-        }
-      });
-      edges.push({
-        source: centerId,
-        target: name,
-        lineStyle: {
-          width: 1.0
+          color: baseColor
         }
       });
     });
 
+    coauthorGraphNodes = nodes;
+
     const graphOption = {
-      title: {
-        text: 'Coauthor Network',
-        left: 'center',
-        top: 10,
-        textStyle: {
-          fontSize: 14
-        }
-      },
       tooltip: {
         formatter: function(params) {
-          if (params.dataType === 'node' && params.data.id !== centerId) {
+          if (params.dataType === 'node') {
             const c = coauthorCounts[params.data.name] || 0;
             return params.data.name + '<br/>Papers together: ' + c;
-          }
-          if (params.dataType === 'node') {
-            return params.data.name;
           }
           return '';
         }
@@ -549,31 +952,48 @@ document.addEventListener('DOMContentLoaded', function() {
           layout: 'force',
           roam: true,
           draggable: true,
-          focusNodeAdjacency: true,
           data: nodes,
-          edges: edges,
-          categories: [
-            { name: 'Me' },
-            { name: 'Coauthor' }
-          ],
+          edges: [],
+          left: COAUTHOR_GRAPH_INSET.left,
+          right: COAUTHOR_GRAPH_INSET.right,
+          top: COAUTHOR_GRAPH_INSET.top,
+          bottom: COAUTHOR_GRAPH_INSET.bottom,
           label: {
             show: true,
             position: 'right',
-            formatter: '{b}',
+            formatter: function(params) {
+              return abbreviateCoauthorName(params.data.name || '');
+            },
             fontSize: 11
           },
           force: {
-            repulsion: 80,
-            edgeLength: [50, 220]
-          },
-          lineStyle: {
-            color: 'rgba(150, 150, 150, 0.7)'
+            initLayout: 'circular',
+            repulsion: 110,
+            gravity: 0.1,
+            friction: 0.68,
+            layoutAnimation: true
           }
         }
       ]
     };
 
     coauthorChart.setOption(graphOption);
+    scheduleCoauthorNodeClamp();
+    bindCoauthorDragClamp();
+
+    coauthorChart.on('finished', clampCoauthorNodes);
+
+    coauthorChart.on('dblclick', function(params) {
+      if (params.dataType !== 'node') return;
+
+      const nodeName = params.data.name || params.data.id;
+
+      if (activeCoauthorFilter === nodeName) {
+        clearCoauthorFilter();
+      } else {
+        applyCoauthorFilter(nodeName);
+      }
+    });
   }
 
   // Handle window resize and container layout changes
@@ -583,6 +1003,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     if (coauthorChart) {
       coauthorChart.resize();
+      scheduleCoauthorNodeClamp();
     }
   });
   
@@ -597,6 +1018,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     if (coauthorChart) {
       coauthorChart.resize();
+      scheduleCoauthorNodeClamp();
     }
   });
 });
