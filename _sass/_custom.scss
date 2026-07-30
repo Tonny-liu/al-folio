@@ -118,6 +118,83 @@ article > .clearfix + h2 {
       margin: 0;
     }
   }
+
+  .periodical {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.35rem;
+
+    .periodical-text {
+      flex: 0 1 auto;
+    }
+
+    .pub-links-dropdown {
+      display: inline-flex;
+      align-items: center;
+      flex: 0 0 auto;
+      margin-left: 0.1rem;
+
+      .pub-more-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.2rem;
+        font-size: 0.75rem;
+        line-height: 1;
+        padding: 0.2rem 0.35rem;
+        color: var(--global-text-color-light);
+        border: 1px solid var(--global-divider-color);
+        background-color: transparent;
+        box-shadow: none;
+        text-transform: none;
+
+        &:hover,
+        &:focus {
+          color: var(--global-theme-color);
+          border-color: var(--global-theme-color);
+          background-color: transparent;
+          box-shadow: none;
+        }
+
+        &::after {
+          margin-left: 0;
+          vertical-align: middle;
+        }
+      }
+
+      .dropdown-menu {
+        font-size: 0.8125rem;
+        min-width: 7.5rem;
+        padding: 0.25rem 0;
+        border-color: var(--global-divider-color);
+        background-color: var(--global-bg-color);
+      }
+
+      .dropdown-item {
+        padding: 0.35rem 0.85rem;
+        color: var(--global-text-color);
+
+        &:hover,
+        &:focus {
+          color: var(--global-theme-color);
+          background-color: var(--global-bg-color);
+        }
+
+        &.active {
+          color: var(--global-theme-color);
+          font-weight: 500;
+        }
+      }
+    }
+  }
+
+  .badges {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.35rem;
+  }
 }
 
 // Homepage contact + visiting address footer

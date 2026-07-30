@@ -1,0 +1,78 @@
+<div class="dropdown pub-links-dropdown">
+  <button
+    class="btn btn-sm pub-more-btn dropdown-toggle"
+    type="button"
+    id="pub-links-{{ entry.key }}"
+    data-toggle="dropdown"
+    aria-haspopup="true"
+    aria-expanded="false"
+    aria-label="More information"
+  >
+    <i class="fa-solid fa-ellipsis" aria-hidden="true"></i>
+  </button>
+  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="pub-links-{{ entry.key }}">
+    {% if entry.award %}
+      <a class="dropdown-item award" href="#" role="button">
+        {%- if entry.award_name %}{{ entry.award_name }}{% else %}Award{% endif -%}
+      </a>
+    {% endif %}
+    {% if entry.abstract %}
+      <a class="dropdown-item abstract" href="#" role="button">Abstract</a>
+    {% endif %}
+    {% if entry.arxiv %}
+      <a href="http://arxiv.org/abs/{{ entry.arxiv }}" class="dropdown-item" role="button">arXiv</a>
+    {% endif %}
+    {% if entry.bibtex_show %}
+      <a class="dropdown-item bibtex" href="#" role="button">BibTeX</a>
+    {% endif %}
+    {% if entry.html %}
+      {% if entry.html contains '://' %}
+        <a href="{{ entry.html }}" class="dropdown-item" role="button">HTML</a>
+      {% else %}
+        <a href="{{ entry.html | prepend: '/assets/html/' | relative_url }}" class="dropdown-item" role="button">HTML</a>
+      {% endif %}
+    {% endif %}
+    {% if entry.pdf %}
+      {% if entry.pdf contains '://' %}
+        <a href="{{ entry.pdf }}" class="dropdown-item" role="button">PDF</a>
+      {% else %}
+        <a href="{{ entry.pdf | prepend: '/assets/pdf/' | relative_url }}" class="dropdown-item" role="button">PDF</a>
+      {% endif %}
+    {% endif %}
+    {% if entry.supp %}
+      {% if entry.supp contains '://' %}
+        <a href="{{ entry.supp }}" class="dropdown-item" role="button">Supplement</a>
+      {% else %}
+        <a href="{{ entry.supp | prepend: '/assets/pdf/' | relative_url }}" class="dropdown-item" role="button">Supplement</a>
+      {% endif %}
+    {% endif %}
+    {% if entry.video and site.enable_video_embedding %}
+      <a class="dropdown-item abstract" href="#" role="button">Video</a>
+    {% elsif entry.video %}
+      <a href="{{ entry.video }}" class="dropdown-item" role="button">Video</a>
+    {% endif %}
+    {% if entry.blog %}
+      <a href="{{ entry.blog }}" class="dropdown-item" role="button">Blog</a>
+    {% endif %}
+    {% if entry.code %}
+      <a href="{{ entry.code }}" class="dropdown-item" role="button">Code</a>
+    {% endif %}
+    {% if entry.poster %}
+      {% if entry.poster contains '://' %}
+        <a href="{{ entry.poster }}" class="dropdown-item" role="button">Poster</a>
+      {% else %}
+        <a href="{{ entry.poster | prepend: '/assets/pdf/' | relative_url }}" class="dropdown-item" role="button">Poster</a>
+      {% endif %}
+    {% endif %}
+    {% if entry.slides %}
+      {% if entry.slides contains '://' %}
+        <a href="{{ entry.slides }}" class="dropdown-item" role="button">Slides</a>
+      {% else %}
+        <a href="{{ entry.slides | prepend: '/assets/pdf/' | relative_url }}" class="dropdown-item" role="button">Slides</a>
+      {% endif %}
+    {% endif %}
+    {% if entry.website %}
+      <a href="{{ entry.website }}" class="dropdown-item" role="button">Website</a>
+    {% endif %}
+  </div>
+</div>
