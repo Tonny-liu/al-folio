@@ -479,6 +479,11 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function updateYearSectionsAfterFilter() {
+    if (window.refreshPublicationFilters) {
+      window.refreshPublicationFilters();
+      return;
+    }
+
     document.querySelectorAll('.year-section').forEach(function(section) {
       const allItems = section.querySelectorAll('ol.bibliography > li');
       const hiddenItems = section.querySelectorAll('ol.bibliography > li.unloaded');
@@ -631,7 +636,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     document.querySelectorAll('.year-section ol.bibliography > li').forEach(function(li) {
       const hide = activeCoauthorFilter ? !publicationHasCoauthor(li, activeCoauthorFilter) : false;
-      li.classList.toggle('unloaded', hide);
+      li.classList.toggle('coauthor-filtered', hide);
     });
 
     updateYearSectionsAfterFilter();
@@ -704,7 +709,7 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Citation data
   const years = [2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026];
-  const citations = [1, 5, 7, 10, 41, 59, 104, 132]; // Actual citation data from papers
+  const citations = [1, 5, 7, 10, 41, 59, 104, 146]; // Actual citation data from papers
   
   const option = {
     title: {

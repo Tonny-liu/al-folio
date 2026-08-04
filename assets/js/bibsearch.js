@@ -1,64 +1,139 @@
 import { highlightSearchTerm } from "./highlight-search-term.js";
 
+const publicationFilterClasses = ["bibsearch-filtered", "label-filtered", "coauthor-filtered"];
+
+const refreshPublicationFilterVisibility = () => {
+  document.querySelectorAll(".bibliography > li").forEach((item) => {
+    const hidden = publicationFilterClasses.some((className) => item.classList.contains(className));
+    item.classList.toggle("unloaded", hidden);
+  });
+
+  document.querySelectorAll(".year-section").forEach((section) => {
+    const allItems = section.querySelectorAll("ol.bibliography > li");
+    const hiddenItems = section.querySelectorAll("ol.bibliography > li.unloaded");
+    section.classList.toggle("unloaded", allItems.length > 0 && allItems.length === hiddenItems.length);
+
+    const year = section.id.replace("year-", "");
+    const yearLink = document.querySelector(`.year-link[data-year="${year}"]`);
+    if (yearLink) {
+      yearLink.setAttribute("data-count", allItems.length - hiddenItems.length);
+    }
+  });
+
+  document.querySelectorAll("h2.bibliography").forEach((element) => {
+    let iterator = element.nextElementSibling;
+    let hideFirstGroupingElement = true;
+
+    while (iterator && iterator.tagName !== "H2") {
+      if (iterator.tagName === "OL") {
+        const unloadedSiblings = iterator.querySelectorAll(":scope > li.unloaded");
+        const totalSiblings = iterator.querySelectorAll(":scope > li");
+        const hideGroup = unloadedSiblings.length === totalSiblings.length;
+        iterator.classList.toggle("unloaded", hideGroup);
+        if (iterator.previousElementSibling) {
+          iterator.previousElementSibling.classList.toggle("unloaded", hideGroup);
+        }
+        if (!hideGroup) hideFirstGroupingElement = false;
+      }
+      iterator = iterator.nextElementSibling;
+    }
+
+    element.classList.toggle("unloaded", hideFirstGroupingElement);
+  });
+};
+
+window.refreshPublicationFilters = refreshPublicationFilterVisibility;
+
 document.addEventListener("DOMContentLoaded", function () {
+  let activeLabel = "";
+
+  const labelsForItem = (item) => {
+    const row = item.querySelector("[data-publication-labels]");
+    if (!row) return [];
+
+    return row.dataset.publicationLabels
+      .split(";")
+      .map((label) => label.trim())
+      .filter(Boolean);
+  };
+
+  const applyLabelFilter = () => {
+    document.querySelectorAll(".bibliography > li").forEach((item) => {
+      const matches = !activeLabel || labelsForItem(item).some((label) => label.toLowerCase() === activeLabel);
+      item.classList.toggle("label-filtered", !matches);
+    });
+    refreshPublicationFilterVisibility();
+  };
+
+  const initializeLabelFilter = () => {
+    const filter = document.getElementById("publication-label-filter");
+    const options = document.getElementById("publication-label-options");
+    if (!filter || !options) return;
+
+    const labels = new Map();
+    let labelOrder = 0;
+    document.querySelectorAll(".bibliography > li").forEach((item) => {
+      labelsForItem(item).forEach((label) => {
+        const key = label.toLowerCase();
+        if (labels.has(key)) {
+          labels.get(key).count += 1;
+        } else {
+          labels.set(key, { label, count: 1, order: labelOrder });
+          labelOrder += 1;
+        }
+      });
+    });
+
+    if (labels.size === 0) return;
+
+    const addButton = (text, value) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "publication-label-filter-btn";
+      button.textContent = text;
+      button.dataset.label = value;
+      button.setAttribute("aria-pressed", "false");
+      button.addEventListener("click", () => {
+        activeLabel = activeLabel === value ? "" : value;
+        options.querySelectorAll(".publication-label-filter-btn").forEach((option) => {
+          const isActive = option.dataset.label === activeLabel;
+          option.classList.toggle("active", isActive);
+          option.setAttribute("aria-pressed", isActive ? "true" : "false");
+        });
+        applyLabelFilter();
+      });
+      options.appendChild(button);
+    };
+
+    Array.from(labels.entries())
+      .sort(([, a], [, b]) => b.count - a.count || a.order - b.order)
+      .forEach(([key, entry]) => addButton(entry.label, key));
+    filter.hidden = false;
+  };
+
   // actual bibsearch logic
   const filterItems = (searchTerm) => {
-    document.querySelectorAll(".bibliography, .unloaded").forEach((element) => element.classList.remove("unloaded"));
+    document.querySelectorAll(".bibliography > li").forEach((element) => element.classList.remove("bibsearch-filtered"));
 
     // highlight-search-term
     if (CSS.highlights) {
       const nonMatchingElements = highlightSearchTerm({ search: searchTerm, selector: ".bibliography > li" });
-      if (nonMatchingElements == null) {
-        return;
+      if (nonMatchingElements != null) {
+        nonMatchingElements.forEach((element) => {
+          element.classList.add("bibsearch-filtered");
+        });
       }
-      nonMatchingElements.forEach((element) => {
-        element.classList.add("unloaded");
-      });
     } else {
-      // Simply add unloaded class to all non-matching items if Browser does not support CSS highlights
-      document.querySelectorAll(".bibliography > li").forEach((element, index) => {
+      // Mark non-matching items when the browser does not support CSS highlights.
+      document.querySelectorAll(".bibliography > li").forEach((element) => {
         const text = element.innerText.toLowerCase();
         if (text.indexOf(searchTerm) == -1) {
-          element.classList.add("unloaded");
+          element.classList.add("bibsearch-filtered");
         }
       });
     }
 
-    // Hide entire .year-section blocks that have no visible entries
-    document.querySelectorAll(".year-section").forEach(function (section) {
-      const allItems = section.querySelectorAll("ol.bibliography > li");
-      const hiddenItems = section.querySelectorAll("ol.bibliography > li.unloaded");
-      if (allItems.length > 0 && allItems.length === hiddenItems.length) {
-        section.classList.add("unloaded");
-      } else {
-        section.classList.remove("unloaded");
-      }
-    });
-
-    document.querySelectorAll("h2.bibliography").forEach(function (element) {
-      let iterator = element.nextElementSibling; // get next sibling element after h2, which can be h3 or ol
-      let hideFirstGroupingElement = true;
-      // iterate until next group element (h2), which is already selected by the querySelectorAll(-).forEach(-)
-      while (iterator && iterator.tagName !== "H2") {
-        if (iterator.tagName === "OL") {
-          const ol = iterator;
-          const unloadedSiblings = ol.querySelectorAll(":scope > li.unloaded");
-          const totalSiblings = ol.querySelectorAll(":scope > li");
-
-          if (unloadedSiblings.length === totalSiblings.length) {
-            ol.previousElementSibling.classList.add("unloaded"); // Add the '.unloaded' class to the previous grouping element (e.g. year)
-            ol.classList.add("unloaded"); // Add the '.unloaded' class to the OL itself
-          } else {
-            hideFirstGroupingElement = false; // there is at least some visible entry, don't hide the first grouping element
-          }
-        }
-        iterator = iterator.nextElementSibling;
-      }
-      // Add unloaded class to first grouping element (e.g. year) if no item left in this group
-      if (hideFirstGroupingElement) {
-        element.classList.add("unloaded");
-      }
-    });
+    refreshPublicationFilterVisibility();
   };
 
   const updateInputField = () => {
@@ -93,10 +168,11 @@ document.addEventListener("DOMContentLoaded", function () {
     clearTimeout(timeoutId); // Clear the previous timeout
     const searchTerm = this.value.toLowerCase();
     updateClearButton(this.value);
-    timeoutId = setTimeout(filterItems(searchTerm), 300);
+    timeoutId = setTimeout(() => filterItems(searchTerm), 300);
   });
 
   window.addEventListener("hashchange", updateInputField); // Update the filter when the hash changes
 
+  initializeLabelFilter();
   updateInputField(); // Update filter when page loads
 });
