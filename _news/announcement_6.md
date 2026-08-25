@@ -5,4 +5,4 @@ inline: true
 related_posts: false
 ---
 
-New paper (https://www.nature.com/articles/s41467-026-76955-w) in *Nature Communications*! :sparkles:
+Excited to share our [new paper](https://www.nature.com/articles/s41467-026-76955-w) published in *Nature Communications* 🌟 We introduced an entropy-based approach to quantify soil moisture disorder on the Tibetan Plateau. Great collaboration with Yiran!
