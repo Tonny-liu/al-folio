@@ -6,6 +6,16 @@ title: publications
 nav: true
 nav_order: 2
 years: [2026, 2025, 2024, 2023, 2022, 2021, 2020, 2019]
+# Citations by year (shown in the "Citations by Year" chart)
+citations_by_year:
+  2019: 1
+  2020: 5
+  2021: 7
+  2022: 10
+  2023: 41
+  2024: 59
+  2025: 104
+  2026: 195
 ---
 
 <!-- _pages/publications.md -->
@@ -358,6 +368,11 @@ years: [2026, 2025, 2024, 2023, 2022, 2021, 2020, 2019]
 <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+  // Citation data (edit `citations_by_year` in the front matter of this page)
+  const citationData = {{ page.citations_by_year | jsonify }};
+  const years = Object.keys(citationData).map(Number).sort((a, b) => a - b);
+  const citations = years.map(year => citationData[year]);
+
   // Count publications per year and update year links
   document.querySelectorAll('.year-section').forEach(section => {
     const yearId = section.getAttribute('id');
@@ -706,10 +721,6 @@ document.addEventListener('DOMContentLoaded', function() {
   const myChart = echarts.init(chartDom);
   let coauthorChart = null;
   let coauthorGraphNodes = null;
-  
-  // Citation data
-  const years = [2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026];
-  const citations = [1, 5, 7, 10, 41, 59, 104, 185]; // Actual citation data from papers
   
   const option = {
     title: {
