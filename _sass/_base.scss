@@ -1255,20 +1255,43 @@ ninja-keys::part(ninja-input-wrapper) {
   align-items: center;
   flex-wrap: wrap;
   gap: 0.6rem;
-  margin: 0.75rem 0 1.25rem;
+  margin: 0.25rem 0 1.25rem;
 
   &[hidden] {
     display: none !important;
   }
 }
 
-// Labels are drawn as a colorbar: one fixed-width segment per label, least to most frequent
+// Labels are drawn as a colorbar: one fixed-width segment per label, least to most frequent,
+// with the label names listed in grey below and a connector line to the hovered one
+.publication-label-colorbar {
+  position: relative;
+  flex: 1 1 100%;
+  // Lets the segments shrink on narrow screens instead of overflowing
+  min-width: 0;
+  // Room above the bar for the publication count
+  padding-top: 1.1rem;
+}
+
+// Publication count shown above the hovered segment, positioned by bibsearch.js
+.publication-label-count {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  color: var(--global-text-color);
+  font-size: 0.75rem;
+  line-height: 1;
+  pointer-events: none;
+
+  &[hidden] {
+    display: none;
+  }
+}
+
 .publication-label-options {
   display: flex;
   max-width: 100%;
   gap: 2px;
-  // Room below the bar for the leader line and its caption
-  padding-bottom: 1.75rem;
 }
 
 .publication-label-filter-btn {
@@ -1293,64 +1316,14 @@ ninja-keys::part(ninja-input-wrapper) {
     border-radius: 0 4px 4px 0;
   }
 
-  // Leader line: drops from the segment, then turns towards the caption
-  &::before {
-    content: "";
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    width: 0.6rem;
-    height: 0.9rem;
-    border-left: 1px solid var(--global-text-color-light);
-    border-bottom: 1px solid var(--global-text-color-light);
-  }
-
-  // Caption: label name and publication count
-  &::after {
-    content: attr(data-caption);
-    position: absolute;
-    top: calc(100% + 0.9rem);
-    left: calc(50% + 0.85rem);
-    transform: translateY(-50%);
-    color: var(--global-text-color);
-    font-size: 0.8rem;
-    line-height: 1;
-    white-space: nowrap;
-  }
-
-  &::before,
-  &::after {
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.15s ease;
-  }
-
-  &--flip::before {
-    left: auto;
-    right: 50%;
-    border-left: none;
-    border-right: 1px solid var(--global-text-color-light);
-  }
-
-  &--flip::after {
-    left: auto;
-    right: calc(50% + 0.85rem);
-  }
-
   &:hover,
-  &:focus-visible {
+  &:focus-visible,
+  &.is-highlighted {
     z-index: 1;
     outline: none;
     box-shadow:
       0 0 0 2px var(--global-bg-color),
       0 0 0 3px var(--global-text-color-light);
-  }
-
-  &:hover::before,
-  &:hover::after,
-  &:focus-visible::before,
-  &:focus-visible::after {
-    opacity: 1;
   }
 
   &.active {
@@ -1361,11 +1334,42 @@ ninja-keys::part(ninja-input-wrapper) {
   }
 }
 
-// Keep the selected label's caption visible while no other segment is being pointed at
-.publication-label-options:not(:hover):not(:has(:focus-visible)) .publication-label-filter-btn.active {
-  &::before,
-  &::after {
-    opacity: 1;
+// Connector path is drawn by bibsearch.js in coordinates relative to .publication-label-colorbar
+.publication-label-connector {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+
+  path {
+    fill: none;
+    stroke: var(--global-text-color);
+    stroke-width: 1;
+  }
+}
+
+.publication-label-captions {
+  display: flex;
+  flex-wrap: wrap;
+  // Row and column gaps leave room for the connector line to run between names
+  gap: 0.6rem 0.9rem;
+  margin-top: 1.4rem;
+  font-size: 0.8rem;
+  line-height: 1.3;
+}
+
+.publication-label-caption {
+  // Faded grey until highlighted
+  color: color-mix(in srgb, var(--global-text-color-light) 70%, var(--global-bg-color));
+  cursor: pointer;
+  transition: color 0.15s ease;
+
+  &.is-highlighted {
+    color: var(--global-text-color);
+    // Slightly heavier strokes without changing text width, so the names don't reflow
+    -webkit-text-stroke: 0.3px currentColor;
   }
 }
 
