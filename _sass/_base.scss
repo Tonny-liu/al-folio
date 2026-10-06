@@ -1262,37 +1262,110 @@ ninja-keys::part(ninja-input-wrapper) {
   }
 }
 
+// Labels are drawn as a colorbar: one fixed-width segment per label, least to most frequent
 .publication-label-options {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.45rem;
+  max-width: 100%;
+  gap: 2px;
+  // Room below the bar for the leader line and its caption
+  padding-bottom: 1.75rem;
 }
 
 .publication-label-filter-btn {
-  padding: 0.3rem 0.7rem;
-  border: 1px solid var(--global-divider-color);
-  border-radius: 999px;
-  color: var(--global-text-color);
-  background: var(--global-bg-color);
+  position: relative;
+  flex: 0 1 auto;
+  width: 2.5rem;
+  min-width: 0.75rem;
+  height: 1.1rem;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  // --label-tint is set per label in bibsearch.js from how often the label is used
+  background: color-mix(in srgb, var(--global-theme-color) var(--label-tint, 0%), var(--global-bg-color));
   cursor: pointer;
-  font-size: 0.85rem;
-  line-height: 1.25;
-  transition:
-    color 0.15s ease,
-    background-color 0.15s ease,
-    border-color 0.15s ease;
+  transition: box-shadow 0.15s ease;
+
+  &:first-child {
+    border-radius: 4px 0 0 4px;
+  }
+
+  &:last-child {
+    border-radius: 0 4px 4px 0;
+  }
+
+  // Leader line: drops from the segment, then turns towards the caption
+  &::before {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    width: 0.6rem;
+    height: 0.9rem;
+    border-left: 1px solid var(--global-text-color-light);
+    border-bottom: 1px solid var(--global-text-color-light);
+  }
+
+  // Caption: label name and publication count
+  &::after {
+    content: attr(data-caption);
+    position: absolute;
+    top: calc(100% + 0.9rem);
+    left: calc(50% + 0.85rem);
+    transform: translateY(-50%);
+    color: var(--global-text-color);
+    font-size: 0.8rem;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  &::before,
+  &::after {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease;
+  }
+
+  &--flip::before {
+    left: auto;
+    right: 50%;
+    border-left: none;
+    border-right: 1px solid var(--global-text-color-light);
+  }
+
+  &--flip::after {
+    left: auto;
+    right: calc(50% + 0.85rem);
+  }
 
   &:hover,
   &:focus-visible {
-    border-color: var(--global-theme-color);
-    color: var(--global-theme-color);
+    z-index: 1;
     outline: none;
+    box-shadow:
+      0 0 0 2px var(--global-bg-color),
+      0 0 0 3px var(--global-text-color-light);
+  }
+
+  &:hover::before,
+  &:hover::after,
+  &:focus-visible::before,
+  &:focus-visible::after {
+    opacity: 1;
   }
 
   &.active {
-    border-color: var(--global-theme-color);
-    color: var(--global-bg-color);
-    background: var(--global-theme-color);
+    z-index: 1;
+    box-shadow:
+      0 0 0 2px var(--global-bg-color),
+      0 0 0 4px var(--global-theme-color);
+  }
+}
+
+// Keep the selected label's caption visible while no other segment is being pointed at
+.publication-label-options:not(:hover):not(:has(:focus-visible)) .publication-label-filter-btn.active {
+  &::before,
+  &::after {
+    opacity: 1;
   }
 }
 

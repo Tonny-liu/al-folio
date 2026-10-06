@@ -86,11 +86,28 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (labels.size === 0) return;
 
-    const addButton = (text, value) => {
+    // Tint each label by frequency: rarest -> lightest, most frequent -> darkest
+    const counts = Array.from(labels.values(), (entry) => entry.count);
+    const minCount = Math.min(...counts);
+    const maxCount = Math.max(...counts);
+    const minTint = 20;
+    const maxTint = 100;
+    const tintForCount = (count) => {
+      const ratio = maxCount === minCount ? 1 : (count - minCount) / (maxCount - minCount);
+      return Math.round(minTint + ratio * (maxTint - minTint));
+    };
+
+    // Each label is one fixed-width colorbar segment; its name is shown via a leader line on hover
+    const addButton = (text, value, count, flip) => {
       const button = document.createElement("button");
+      const caption = `${text} (${count})`;
       button.type = "button";
       button.className = "publication-label-filter-btn";
-      button.textContent = text;
+      button.style.setProperty("--label-tint", `${tintForCount(count)}%`);
+      // Segments on the right half point their leader line leftwards to stay inside the page
+      button.classList.toggle("publication-label-filter-btn--flip", flip);
+      button.dataset.caption = caption;
+      button.setAttribute("aria-label", caption);
       button.dataset.label = value;
       button.setAttribute("aria-pressed", "false");
       button.addEventListener("click", () => {
@@ -105,9 +122,11 @@ document.addEventListener("DOMContentLoaded", function () {
       options.appendChild(button);
     };
 
-    Array.from(labels.entries())
-      .sort(([, a], [, b]) => b.count - a.count || a.order - b.order)
-      .forEach(([key, entry]) => addButton(entry.label, key));
+    // Colorbar runs from least to most frequent, left to right
+    const sortedLabels = Array.from(labels.entries()).sort(([, a], [, b]) => a.count - b.count || a.order - b.order);
+    sortedLabels.forEach(([key, entry], index) =>
+      addButton(entry.label, key, entry.count, index >= Math.ceil(sortedLabels.length / 2))
+    );
     filter.hidden = false;
   };
 
