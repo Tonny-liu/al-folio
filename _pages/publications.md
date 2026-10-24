@@ -15,7 +15,7 @@ citations_by_year:
   2023: 41
   2024: 59
   2025: 104
-  2026: 195
+  2026: 202
 ---
 
 <!-- _pages/publications.md -->
