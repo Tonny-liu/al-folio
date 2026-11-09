@@ -1,0 +1,11 @@
+# Local preview only. The production configuration in _config.yml is unchanged.
+# Avoid network-only article imports and citation lookups during UI development.
+url: "http://127.0.0.1:4173"
+baseurl: ""
+external_sources: []
+enable_publication_badges:
+  google_scholar: false
+  inspirehep: false
+# Existing images are used directly; avoid an unrelated ImageMagick rebuild.
+imagemagick:
+  enabled: false

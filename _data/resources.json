@@ -1,0 +1,253 @@
+[
+  {
+    "id": "google-scholar",
+    "name": "Google Scholar",
+    "url": "https://scholar.google.com/",
+    "category": "Research",
+    "description": "Papers & citations",
+    "note": "Find scholarly literature, follow citation trails, and discover related research across disciplines.",
+    "color": "#4285f4",
+    "featured": true
+  },
+  {
+    "id": "arxiv",
+    "name": "arXiv",
+    "url": "https://arxiv.org/",
+    "category": "Research",
+    "description": "Preprints & new ideas",
+    "note": "Explore research preprints and follow new work in physics, mathematics, computer science, and related fields.",
+    "color": "#b31b1b",
+    "featured": true
+  },
+  {
+    "id": "github",
+    "name": "GitHub",
+    "url": "https://github.com/",
+    "category": "Tools",
+    "description": "Code & collaboration",
+    "note": "Explore source code, document research software, and collaborate on reproducible scientific projects.",
+    "color": "#24292f",
+    "featured": true
+  },
+  {
+    "id": "overleaf",
+    "name": "Overleaf",
+    "url": "https://www.overleaf.com/",
+    "category": "Tools",
+    "description": "LaTeX writing",
+    "note": "Write and revise LaTeX documents in a shared editor, with a live preview of the manuscript.",
+    "color": "#438a38",
+    "featured": true
+  },
+  {
+    "id": "copernicus-cds",
+    "name": "Copernicus CDS",
+    "url": "https://cds.climate.copernicus.eu/",
+    "category": "Data",
+    "description": "Climate datasets",
+    "note": "Access climate datasets, tools, and documentation from the Copernicus Climate Change Service.",
+    "color": "#1674b8",
+    "featured": true
+  },
+  {
+    "id": "chatgpt",
+    "name": "ChatGPT",
+    "url": "https://chatgpt.com/",
+    "category": "Tools",
+    "description": "Thinking & drafting",
+    "note": "Explore ideas, work through questions, and develop early drafts. Check important results against original sources.",
+    "color": "#16705b",
+    "featured": true
+  },
+  {
+    "id": "claude",
+    "name": "Claude",
+    "url": "https://claude.ai/",
+    "category": "Tools",
+    "description": "Writing & analysis",
+    "note": "Read and discuss documents, develop ideas, and work on writing and coding tasks.",
+    "color": "#c57453",
+    "featured": false
+  },
+  {
+    "id": "gemini",
+    "name": "Gemini",
+    "url": "https://gemini.google.com/",
+    "category": "Tools",
+    "description": "Ideas & everyday questions",
+    "note": "Explore ideas, ask questions, and get help with writing, learning, and everyday tasks.",
+    "color": "#5b66d6",
+    "featured": false
+  },
+  {
+    "id": "deepseek",
+    "name": "DeepSeek",
+    "url": "https://chat.deepseek.com/",
+    "category": "Tools",
+    "description": "Reasoning & coding",
+    "note": "Work through questions, explore ideas, and get help with writing and coding.",
+    "color": "#4b6bdf",
+    "featured": false
+  },
+  {
+    "id": "latex-preview",
+    "name": "LaTeX Previewer",
+    "url": "https://www.tlhiv.org/ltxpreview/",
+    "category": "Tools",
+    "description": "Preview LaTeX snippets",
+    "note": "Preview LaTeX snippets with optional packages and export the results as PDF, SVG, or PNG.",
+    "color": "#315b7f",
+    "featured": false
+  },
+  {
+    "id": "ipcc-atlas",
+    "name": "IPCC AR6 WGI Interactive Atlas",
+    "cardTitle": "IPCC Interactive Atlas",
+    "url": "https://interactive-atlas.ipcc.ch/",
+    "category": "Data",
+    "description": "Observed & projected climate",
+    "note": "Explore spatial and temporal patterns of observed and projected climate change with the IPCC interactive atlas.",
+    "color": "#327aad",
+    "featured": false
+  },
+  {
+    "id": "nasa-worldview",
+    "name": "NASA Worldview",
+    "url": "https://worldview.earthdata.nasa.gov",
+    "category": "Data",
+    "description": "Satellite imagery",
+    "note": "Browse global satellite imagery, investigate changes over time, and find the underlying data for further analysis.",
+    "color": "#315eaf",
+    "featured": false
+  },
+  {
+    "id": "era5",
+    "name": "ERA5",
+    "url": "https://www.ecmwf.int/en/forecasts/dataset/ecmwf-reanalysis-v5",
+    "category": "Data",
+    "description": "Global climate reanalysis",
+    "note": "Find information about ERA5, a global reanalysis of atmospheric, land, and oceanic climate variables.",
+    "color": "#237ba0",
+    "featured": false
+  },
+  {
+    "id": "cmip",
+    "name": "CMIP",
+    "url": "https://wcrp-cmip.org/",
+    "category": "Data",
+    "description": "Climate model comparisons",
+    "note": "Learn about coordinated climate model experiments and comparisons of past and future climate change.",
+    "color": "#5b66aa",
+    "featured": false
+  },
+  {
+    "id": "dcent-i",
+    "name": "DCENT-I",
+    "url": "https://dcent-i.github.io/sections/dataset_selector.html",
+    "category": "Data",
+    "description": "Global temperature datasets",
+    "note": "Explore monthly global surface temperature data from 1850 onward.",
+    "color": "#b97032",
+    "featured": false
+  },
+  {
+    "id": "zoom-earth",
+    "name": "Zoom Earth",
+    "url": "https://zoom.earth/maps/satellite/",
+    "category": "Data",
+    "description": "Weather satellite maps",
+    "note": "Explore global weather satellite imagery and follow cloud patterns using interactive maps.",
+    "color": "#247eaa",
+    "featured": false
+  },
+  {
+    "id": "nature",
+    "name": "Nature",
+    "url": "https://www.nature.com/nature/",
+    "category": "Research",
+    "description": "Multidisciplinary research",
+    "note": "Explore research, reviews, and news across the natural sciences.",
+    "color": "#000",
+    "featured": false
+  },
+  {
+    "id": "nature-climate-change",
+    "name": "Nature Climate Change",
+    "url": "https://www.nature.com/nclimate/",
+    "category": "Research",
+    "description": "Climate science & society",
+    "note": "Read research on climate change, its impacts, and responses across science and society.",
+    "color": "#0095bb",
+    "featured": false
+  },
+  {
+    "id": "nature-geoscience",
+    "name": "Nature Geoscience",
+    "url": "https://www.nature.com/ngeo/",
+    "category": "Research",
+    "description": "Earth & planetary science",
+    "note": "Explore research on Earth systems, geoscience, and planetary processes.",
+    "color": "#299751",
+    "featured": false
+  },
+  {
+    "id": "nature-ecology-evolution",
+    "name": "Nature Ecology & Evolution",
+    "url": "https://www.nature.com/natecolevol/",
+    "category": "Research",
+    "description": "Ecology & evolution",
+    "note": "Read research on ecology, biodiversity, and evolutionary processes.",
+    "color": "#c7d530",
+    "featured": false
+  },
+  {
+    "id": "nature-communications",
+    "name": "Nature Communications",
+    "url": "https://www.nature.com/ncomms/",
+    "category": "Research",
+    "description": "Open-access research",
+    "note": "Explore open-access research across the natural sciences.",
+    "color": "#e63323",
+    "featured": false
+  },
+  {
+    "id": "science",
+    "name": "Science",
+    "url": "https://www.science.org/journal/science",
+    "category": "Research",
+    "description": "Research across the sciences",
+    "note": "Browse research, perspectives, and news across scientific disciplines.",
+    "color": "#005b8d",
+    "featured": false
+  },
+  {
+    "id": "science-advances",
+    "name": "Science Advances",
+    "url": "https://www.science.org/journal/sciadv",
+    "category": "Research",
+    "description": "Open-access scientific research",
+    "note": "Read open-access research across science, engineering, and related fields.",
+    "color": "#005b8d",
+    "featured": false
+  },
+  {
+    "id": "pnas",
+    "name": "PNAS",
+    "url": "https://www.pnas.org/",
+    "category": "Research",
+    "description": "Multidisciplinary research",
+    "note": "Explore research spanning the biological, physical, and social sciences.",
+    "color": "#127ca7",
+    "featured": false
+  },
+  {
+    "id": "prl",
+    "name": "Physical Review Letters",
+    "url": "https://journals.aps.org/prl/",
+    "category": "Research",
+    "description": "Discoveries across physics",
+    "note": "Read concise reports of significant advances across physics.",
+    "color": "#047a83",
+    "featured": false
+  }
+]

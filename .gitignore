@@ -12,3 +12,7 @@ node_modules/
 vendor
 .idea
 /.claude
+
+# Keep the adapted badge component and its licenses in Git.
+!resources-ui/vendor/
+!resources-ui/vendor/**

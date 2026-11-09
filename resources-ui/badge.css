@@ -1,0 +1,165 @@
+.rp-badge-preview {
+  position: relative;
+  min-width: 0;
+  width: 100%;
+}
+.rp-badge-stage {
+  position: relative;
+  height: 500px;
+  isolation: isolate;
+}
+.rp-badge-aura {
+  position: absolute;
+  inset: 20% 2% 0;
+  z-index: -1;
+  background: radial-gradient(ellipse at 50% 58%, rgba(150, 80, 176, 0.13), transparent 68%);
+  pointer-events: none;
+}
+.rp-badge-model {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+.rp-badge-model--ready {
+  opacity: 1;
+  pointer-events: auto;
+  transition: opacity 0.2s ease;
+}
+.rp-badge-static {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 17%;
+  right: 17%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 112px;
+  pointer-events: none;
+}
+.rp-badge-static img,
+.rp-badge-text-fallback {
+  display: block;
+  width: 100%;
+  max-width: 232px;
+  height: auto;
+  aspect-ratio: 1296 / 1824;
+  border-radius: 15px;
+  box-shadow:
+    0 16px 27px rgba(62, 40, 70, 0.13),
+    0 2px 3px rgba(62, 40, 70, 0.16);
+  transform: rotate(5deg);
+  background: #fff;
+}
+.rp-badge-static-strap {
+  position: absolute;
+  top: 0;
+  left: calc(50% - 12px);
+  height: 100px;
+  width: 24px;
+  background: repeating-linear-gradient(90deg, transparent 0 2px, rgba(255, 255, 255, 0.1) 2px 3px), #8e44ad;
+  transform: rotate(-4deg);
+}
+.rp-badge-static-clip {
+  position: absolute;
+  top: 94px;
+  left: calc(50% - 10px);
+  width: 20px;
+  height: 32px;
+  border: 3px solid #9b9b9f;
+  border-radius: 7px;
+  background: linear-gradient(90deg, #eeeeef, #9b9b9e 45%, #f5f5f5);
+  z-index: 2;
+}
+.rp-badge-caption {
+  text-align: center;
+  position: relative;
+  margin-top: -12px;
+}
+.rp-badge-hint {
+  color: var(--rp-muted, #777);
+  font-size: 12px;
+  line-height: 1.5;
+  margin: 0 0 6px;
+}
+.rp-flip-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  background: none;
+  border: 0;
+  color: var(--rp-accent, #8e44ad);
+  font: inherit;
+  font-size: 12px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.rp-flip-button:hover {
+  background: rgba(142, 68, 173, 0.08);
+}
+.rp-flip-button:focus-visible {
+  outline: 2px solid var(--global-theme-color, #8e44ad);
+  outline-offset: 3px;
+}
+.rp-flip-button svg {
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.rp-badge-text-fallback {
+  box-sizing: border-box;
+  padding: 40px 22px 20px;
+  text-align: center;
+  color: #27232b;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.rp-badge-text-fallback span {
+  color: #8e44ad;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+}
+.rp-badge-text-fallback strong {
+  margin: 24px 0 12px;
+  font-size: 24px;
+  line-height: 1.2;
+}
+.rp-badge-text-fallback p {
+  font-size: 13px;
+  line-height: 1.5;
+}
+@media (max-width: 767px) {
+  .rp-badge-stage {
+    height: 390px;
+    max-width: 420px;
+    margin: 0 auto;
+  }
+  .rp-badge-static {
+    padding-top: 85px;
+    left: 24%;
+    right: 24%;
+  }
+  .rp-badge-static-strap {
+    height: 74px;
+  }
+  .rp-badge-static-clip {
+    top: 70px;
+  }
+  .rp-badge-caption {
+    margin-top: -10px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rp-badge-model--ready {
+    transition: none;
+  }
+}

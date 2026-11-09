@@ -1,6 +1,16 @@
 {
   "devDependencies": {
     "@shopify/prettier-plugin-liquid": "1.4.0",
-    "prettier": "3.1.1"
+    "prettier": "3.1.1",
+    "esbuild": "^0.25.12"
+  },
+  "scripts": {
+    "build:resources": "node resources-ui/generate-assets.mjs && node resources-ui/build.mjs",
+    "preview:resources": "bash resources-ui/preview.sh"
+  },
+  "dependencies": {
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "three": "^0.186.1"
   }
 }

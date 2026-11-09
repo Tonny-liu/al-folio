@@ -7,6 +7,10 @@ on:
       - main
     paths:
       - "assets/**"
+      - "resources-ui/**"
+      - "_data/resources.json"
+      - "package.json"
+      - "package-lock.json"
       - "_sass/**"
       - "_scripts/**"
       - "**.bib"
@@ -36,6 +40,10 @@ on:
       - main
     paths:
       - "assets/**"
+      - "resources-ui/**"
+      - "_data/resources.json"
+      - "package.json"
+      - "package-lock.json"
       - "_sass/**"
       - "_scripts/**"
       - "**.bib"
@@ -71,6 +79,13 @@ jobs:
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+      - name: Build Resources assets
+        run: npm ci && npm run build:resources
       - name: Setup Ruby 💎
         uses: ruby/setup-ruby@v1
         with:
